@@ -191,7 +191,8 @@ export function ResultContent({ license }: { license: License }) {
       </div>
 
       {/* Action buttons */}
-      <div className="mx-auto flex gap-3" style={{ width: 420 }}>
+      <div className="overflow-x-auto flex justify-center">
+      <div className="flex gap-3" style={{ width: 420 }}>
         <Button
           variant="default"
           className="flex-1 rounded-xl h-12 font-bold shadow-md"
@@ -208,6 +209,7 @@ export function ResultContent({ license }: { license: License }) {
           <Copy className="h-4 w-4 mr-2" />
           {copied ? "已复制！" : "复制链接"}
         </Button>
+      </div>
       </div>
     </>
   );
