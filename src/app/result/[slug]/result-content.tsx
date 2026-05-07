@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
 import QRCode from "qrcode";
 import type { License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -67,15 +67,21 @@ export function ResultContent({ license }: { license: License }) {
   }, []);
 
   const handleSaveImage = async () => {
-    if (!cardRef.current) return;
+    const el = cardRef.current;
+    if (!el) return;
     try {
-      const canvas = await html2canvas(cardRef.current, {
-        scale: 2,
-        useCORS: true,
+      const dataUrl = await toPng(el, {
+        quality: 0.95,
+        pixelRatio: 2,
+        width: 420,
+        height: el.scrollHeight,
+        style: {
+          transform: "none",
+        },
       });
       const link = document.createElement("a");
       link.download = `license-persona-${license.slug}.png`;
-      link.href = canvas.toDataURL("image/png");
+      link.href = dataUrl;
       link.click();
     } catch (err) {
       console.error("Failed to generate image", err);
@@ -94,7 +100,8 @@ export function ResultContent({ license }: { license: License }) {
 
   return (
     <>
-      <div ref={cardRef} className="mx-auto" style={{ width: 420, maxWidth: "100%" }}>
+      <div className="overflow-x-auto flex justify-center">
+      <div ref={cardRef} style={{ width: 420 }}>
         <div className="rounded-xl bg-card text-card-foreground shadow-xl">
           {/* Top color bar */}
           <div
@@ -181,9 +188,10 @@ export function ResultContent({ license }: { license: License }) {
           )}
         </div>
       </div>
+      </div>
 
       {/* Action buttons */}
-      <div className="mx-auto flex gap-3" style={{ width: 420, maxWidth: "100%" }}>
+      <div className="mx-auto flex gap-3" style={{ width: 420 }}>
         <Button
           variant="default"
           className="flex-1 rounded-xl h-12 font-bold shadow-md"
