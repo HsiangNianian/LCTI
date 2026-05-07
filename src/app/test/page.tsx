@@ -30,6 +30,8 @@ const DOT_SIZE_CLASSES = {
   center: "h-8 w-8",
 } as const;
 const MIDDLE_DOT_VALUES = new Set<ScoreValue>([0.25, 0.75]);
+const DOT_OPTION_CARD_CLASSES =
+  "flex min-h-28 min-w-0 cursor-pointer items-center justify-center rounded-2xl border-2 p-2 transition-all hover:bg-muted/50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2";
 
 function QuizInner() {
   const router = useRouter();
@@ -135,12 +137,12 @@ function QuizInner() {
                       key={option.value}
                       htmlFor={optionId}
                       title={`${option.label}：${option.description}`}
-                      className={`flex min-h-28 min-w-0 cursor-pointer items-center justify-center rounded-2xl border-2 p-2 transition-all hover:bg-muted/50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 ${activeClasses}`}
+                      className={`${DOT_OPTION_CARD_CLASSES} ${activeClasses}`}
                     >
                       <RadioGroupItem
                         value={option.value.toString()}
                         id={optionId}
-                        aria-label={`题目：${question.text}。选项：${option.label}。说明：${option.description}。`}
+                        aria-label={`${option.label}：${option.description}`}
                         className={`${dotSizeClasses} shrink-0 border-2 ${dotClasses}`}
                       />
                     </Label>
