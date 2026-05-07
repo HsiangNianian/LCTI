@@ -33,6 +33,7 @@ export function calculateDimensionScores(answers: QuizAnswers): DimensionScores 
 }
 
 export function getResultBinaryString(scores: DimensionScores): string {
+  // Midpoint answers resolve to the right-side trait so every completed run still maps to one of the 16 fixed result types.
   return dimensionOrder.map((dimension) => (scores[dimension] >= RESULT_THRESHOLD ? "1" : "0")).join("");
 }
 

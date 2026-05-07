@@ -61,7 +61,7 @@ function QuizInner() {
           <Progress value={progress} className="h-2.5" />
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>第 {currentQuestion + 1} / {questions.length} 题</span>
-            <span>{dimension.left} ↔ {dimension.right}</span>
+            <span>{dimension.left} / {dimension.right}</span>
           </div>
         </div>
 

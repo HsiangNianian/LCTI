@@ -60,7 +60,8 @@ export function ResultContent({ license }: { license: License }) {
   const parsedScores = parseDimensionScores(searchParams.get("scores"));
   const dimensionScores = parsedScores
     ? dimensionOrder.map((dimension) => parsedScores[dimension])
-    : license.binary.map((value) => Number(value));
+    // Shared result links may only carry the 4-bit slug, so the fallback intentionally snaps each dimension to its endpoint.
+    : license.binary.map((value) => (value === 1 ? 1 : 0));
 
   useEffect(() => {
     const url = window.location.origin + "/test";
