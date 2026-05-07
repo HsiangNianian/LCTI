@@ -65,7 +65,7 @@ export function ResultContent({ license }: { license: License }) {
   useEffect(() => {
     const url = window.location.origin + "/test";
     QRCode.toDataURL(url, {
-      width: 200,
+      width: 240,
       margin: 1,
       color: { dark: "#171717", light: "#ffffff" },
     }).then(setQrDataUrl);
@@ -116,7 +116,7 @@ export function ResultContent({ license }: { license: License }) {
               {license.fullName}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6 relative">
+          <CardContent className="space-y-6">
             <div className="text-center space-y-2">
               <p className="text-2xl font-bold">{license.title}</p>
               <p className="text-sm text-muted-foreground italic">
@@ -139,20 +139,25 @@ export function ResultContent({ license }: { license: License }) {
                 />
               ))}
             </div>
+          </CardContent>
 
-            {qrDataUrl && (
-              <div className="absolute bottom-2 right-3 flex flex-col items-center gap-0.5">
+          {qrDataUrl && (
+            <div
+              className="px-4 py-3 flex items-center justify-end gap-3"
+              style={{ backgroundColor: license.color }}
+            >
+              <span className="text-[11px] text-white/80 leading-none">
+                扫码测你的灵魂许可证
+              </span>
+              <div className="bg-white rounded-sm p-1">
                 <img
                   src={qrDataUrl}
                   alt="扫码测试"
-                  className="w-14 h-14"
+                  className="w-12 h-12"
                 />
-                <span className="text-[9px] text-muted-foreground leading-none">
-                  扫码测试
-                </span>
               </div>
-            )}
-          </CardContent>
+            </div>
+          )}
         </Card>
       </div>
 
