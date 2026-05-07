@@ -14,12 +14,12 @@ LCTI 是一套**开源许可证人格测试**，灵感来自 MBTI。通过 32 �
 
 ### 四维人格模型
 
-| 维度 | En | 缩写 | 左端（0）               | 右端（1）                 |
-| ---- | -- | ---- | ----------------------- | ------------------------- |
-| 协作态度 | Collaboration | COL | 独行侠 — Copyleft 倾向  | 布道者 — Permissive 倾向 |
-| 信任模式 | Trust | TRU | 审计员 — 要求显式署名   | 乐捐者 — 无需署名        |
-| 责任边界 | Liability | LIA | 盾牌手 — 强免责声明     | 冒险家 — 最小化责任限制  |
-| 传播执念 | Propagation | PRO | 传教士 — 要求同协议传染 | 实用派 — 允许闭源商用    |
+| 维度     | En            | 缩写 | 左端（0）                | 右端（1）                 |
+| -------- | ------------- | ---- | ------------------------ | ------------------------- |
+| 协作态度 | Collaboration | COL  | 独行侠 — Copyleft 倾向  | 布道者 — Permissive 倾向 |
+| 信任模式 | Trust         | TRU  | 审计员 — 要求显式署名   | 乐捐者 — 无需署名        |
+| 责任边界 | Liability     | LIA  | 盾牌手 — 强免责声明     | 冒险家 — 最小化责任限制  |
+| 传播执念 | Propagation   | PRO  | 传教士 — 要求同协议传染 | 实用派 — 允许闭源商用    |
 
 ### 32 题评分方式
 
@@ -52,24 +52,6 @@ LCTI 是一套**开源许可证人格测试**，灵感来自 MBTI。通过 32 �
 
 ---
 
-## 技术栈
-
-| 层       | 工具                                                   |
-| -------- | ------------------------------------------------------ |
-| 框架     | [Next.js 16](https://nextjs.org) (App Router)             |
-| 语言     | TypeScript                                             |
-| 样式     | [Tailwind CSS v4](https://tailwindcss.com)                |
-| 组件库   | [shadcn/ui](https://ui.shadcn.com)                        |
-| 图标     | [lucide-react](https://lucide.dev)                        |
-| 二维码   | [qrcode](https://github.com/soldair/node-qrcode)          |
-| 截图生成 | [html-to-image](https://github.com/bubkoo/html-to-image)  |
-| 主题切换 | [next-themes](https://github.com/pacocoursey/next-themes) |
-| 部署     | [Vercel](https://vercel.com)                              |
-
-所有页面均为**静态生成**（SSG），零服务端运行时成本，Vercel 免费额度足够。
-
----
-
 ## 快速开始
 
 ```bash
@@ -87,33 +69,6 @@ pnpm lint
 ```
 
 访问 `http://localhost:3000` 预览。
-
----
-
-## 项目结构
-
-```
-src/
-├── app/
-│   ├── page.tsx                     # 首页
-│   ├── layout.tsx                   # 根布局 (SEO, 主题, 字体)
-│   ├── not-found.tsx                # 404 页面
-│   ├── icon.svg                     # SVG favicon
-│   ├── globals.css                  # Tailwind + shadcn 主题
-│   ├── test/page.tsx                # 答题页
-│   └── result/[slug]/page.tsx       # 结果页 (16 个静态路径)
-│       └── result-content.tsx       # 结果卡片 + 维度可视化 + 截图
-├── components/
-│   ├── ui/                          # shadcn/ui 组件
-│   ├── theme-provider.tsx           # 主题上下文
-│   └── theme-toggle.tsx             # 主题切换按钮
-└── lib/
-    ├── types.ts                     # TypeScript 类型
-    ├── licenses.ts                  # 16 个许可证数据 + 四维映射
-    ├── questions.ts                 # 32 道题目 + 四维定义
-    ├── scoring.ts                   # 梯度评分与 16 型映射
-    └── quiz-context.tsx             # 答题状态管理
-```
 
 ---
 
