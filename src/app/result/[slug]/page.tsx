@@ -47,6 +47,7 @@ export default async function ResultPage({
 }) {
   const { slug } = await params;
   const { scores } = await searchParams;
+  const normalizedScores = typeof scores === "string" ? scores : null;
 
   let license = getLicenseBySlug(slug);
   if (!license && slug.length === 4 && /^[01]{4}$/.test(slug)) {
@@ -58,7 +59,7 @@ export default async function ResultPage({
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-4 py-12 md:py-16">
       <div className="w-full max-w-lg mx-auto space-y-6">
-        <ResultContent license={license} dimensionScores={parseDimensionScores(scores ?? null)} />
+        <ResultContent license={license} dimensionScores={parseDimensionScores(normalizedScores)} />
 
         <div className="text-center">
           <Link
