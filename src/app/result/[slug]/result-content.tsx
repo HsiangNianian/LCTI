@@ -5,12 +5,6 @@ import { toPng } from "html-to-image";
 import QRCode from "qrcode";
 import type { License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Download, Copy } from "lucide-react";
 
 const dimensionLabels = [
@@ -39,18 +33,18 @@ function DimensionBar({
           {right}
         </span>
       </div>
-      <div className="relative h-2.5 bg-muted rounded-full overflow-hidden">
+      <div className="relative h-2.5 bg-muted rounded-full">
         <div
-          className="absolute h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-700"
+          className="absolute h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
           style={{
             width: "50%",
             left: value === 0 ? "0%" : "50%",
           }}
         />
         <div
-          className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-white dark:bg-zinc-900 border-2 border-indigo-500 shadow-sm transition-all duration-500"
+          className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-white dark:bg-zinc-900 border-2 border-indigo-500 shadow-sm"
           style={{
-            left: value === 0 ? "calc(0% - 0px)" : "calc(100% - 1rem)",
+            left: value === 0 ? "0%" : "calc(100% - 1rem)",
           }}
         />
       </div>
@@ -100,13 +94,16 @@ export function ResultContent({ license }: { license: License }) {
 
   return (
     <>
-      <div ref={cardRef} className="w-[420px] max-w-full mx-auto">
-        <Card className="overflow-hidden shadow-xl">
+      <div ref={cardRef} className="mx-auto" style={{ width: 420, maxWidth: "100%" }}>
+        <div className="rounded-xl bg-card text-card-foreground shadow-xl">
           {/* Top color bar */}
-          <div className="h-2" style={{ backgroundColor: license.color }} />
+          <div
+            className="h-2 rounded-t-xl"
+            style={{ backgroundColor: license.color }}
+          />
 
-          {/* Header with badge */}
-          <CardHeader className="text-center pb-2 pt-6">
+          {/* Header */}
+          <div className="text-center pt-6 pb-2 px-4">
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md"
               style={{ backgroundColor: license.color }}
@@ -115,18 +112,16 @@ export function ResultContent({ license }: { license: License }) {
                 {license.name.charAt(0)}
               </span>
             </div>
-            <CardTitle className="text-3xl font-black tracking-tight">
-              {license.name}
-            </CardTitle>
+            <p className="text-3xl font-black tracking-tight">{license.name}</p>
             <p className="text-xs text-muted-foreground font-mono mt-1">
               {license.fullName}
             </p>
-          </CardHeader>
+          </div>
 
-          <CardContent className="space-y-6">
+          {/* Body */}
+          <div className="px-4 pb-4 space-y-6">
             {/* Personality */}
-
-            <div className="text-center space-y-3">
+            <div className="text-center space-y-3 pt-2">
               <div>
                 <span
                   className="inline-block text-xs font-bold text-white px-3 py-1 rounded-full"
@@ -143,7 +138,8 @@ export function ResultContent({ license }: { license: License }) {
               </p>
             </div>
 
-            <div className="bg-muted/50 rounded-xl p-5 space-y-1">
+            {/* Description */}
+            <div className="bg-muted/50 rounded-xl p-5">
               <p className="text-xs text-muted-foreground leading-relaxed">
                 {license.description}
               </p>
@@ -163,18 +159,16 @@ export function ResultContent({ license }: { license: License }) {
                 />
               ))}
             </div>
-          </CardContent>
+          </div>
 
           {/* QR code footer */}
           {qrDataUrl && (
             <div
-              className="px-4 py-3 flex items-center justify-between"
+              className="rounded-b-xl px-4 py-3 flex items-center justify-between"
               style={{ backgroundColor: license.color }}
             >
               <span className="text-[11px] font-medium text-white/70 leading-none max-w-[60%]">
                 扫码测你的灵魂开源许可证
-                <br />
-                <span className="text-[10px] text-white/40">只花 30 秒，不是 MBTI 那种</span>
               </span>
               <div className="bg-white rounded-lg p-1.5 shadow-md shrink-0">
                 <img
@@ -185,11 +179,11 @@ export function ResultContent({ license }: { license: License }) {
               </div>
             </div>
           )}
-        </Card>
+        </div>
       </div>
 
       {/* Action buttons */}
-      <div className="w-[420px] max-w-full mx-auto flex gap-3">
+      <div className="mx-auto flex gap-3" style={{ width: 420, maxWidth: "100%" }}>
         <Button
           variant="default"
           className="flex-1 rounded-xl h-12 font-bold shadow-md"
