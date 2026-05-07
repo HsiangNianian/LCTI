@@ -136,13 +136,13 @@ function QuizInner() {
                     <Label
                       key={option.value}
                       htmlFor={optionId}
-                      title={`${option.label}：${option.description}`}
+                      title={`${option.label}: ${option.description}`}
                       className={`${DOT_OPTION_CARD_CLASSES} ${activeClasses}`}
                     >
                       <RadioGroupItem
                         value={option.value.toString()}
                         id={optionId}
-                        aria-label={`${option.label}：${option.description}`}
+                        aria-label={`${option.label}: ${option.description}`}
                         className={`${dotSizeClasses} shrink-0 border-2 ${dotClasses}`}
                       />
                     </Label>
