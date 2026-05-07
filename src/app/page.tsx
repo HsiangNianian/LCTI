@@ -64,8 +64,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+      <footer className="border-t py-6 text-center text-sm text-muted-foreground space-y-1">
         <p>灵感来自 MBTI 人格模型 · 纯算法结果 · 仅供娱乐</p>
+        <p>
+          LCTI &copy;{" "}
+          <a
+            href="https://github.com/HsiangNianian"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-foreground transition-colors"
+          >
+            简律纯
+          </a>
+          {" · "}
+          <a
+            href="https://github.com/HsiangNianian/LCTI"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-foreground transition-colors"
+          >
+            Github
+          </a>
+        </p>
       </footer>
     </main>
   );
