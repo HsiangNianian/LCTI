@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { toPng } from "html-to-image";
+import QRCode from "qrcode";
 import type { License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -59,6 +60,16 @@ function DimensionBar({
 
 export function ResultContent({ license }: { license: License }) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const [qrDataUrl, setQrDataUrl] = useState("");
+
+  useEffect(() => {
+    const url = window.location.origin + "/test";
+    QRCode.toDataURL(url, {
+      width: 200,
+      margin: 1,
+      color: { dark: "#171717", light: "#ffffff" },
+    }).then(setQrDataUrl);
+  }, []);
 
   const handleSaveImage = async () => {
     if (!cardRef.current) return;
@@ -105,7 +116,7 @@ export function ResultContent({ license }: { license: License }) {
               {license.fullName}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 relative">
             <div className="text-center space-y-2">
               <p className="text-2xl font-bold">{license.title}</p>
               <p className="text-sm text-muted-foreground italic">
@@ -128,6 +139,19 @@ export function ResultContent({ license }: { license: License }) {
                 />
               ))}
             </div>
+
+            {qrDataUrl && (
+              <div className="absolute bottom-2 right-3 flex flex-col items-center gap-0.5">
+                <img
+                  src={qrDataUrl}
+                  alt="扫码测试"
+                  className="w-14 h-14"
+                />
+                <span className="text-[9px] text-muted-foreground leading-none">
+                  扫码测试
+                </span>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
