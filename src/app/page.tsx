@@ -16,9 +16,9 @@ export default function HomePage() {
               开源许可证是什么？
             </h1>
             <p className="text-base md:text-lg text-muted-foreground max-w-md mx-auto leading-relaxed">
-              四道灵魂拷问，<span className="font-semibold text-foreground">零 AI、零玄学</span>，
+              32 道渐进式灵魂拷问，<span className="font-semibold text-foreground">零 AI、零玄学</span>，
               <br />
-              纯算法找出你最契合的开源人格。
+              用 0 到 1 的倾向分值，纯算法归纳你的 16 型开源人格。
               <br />
               测完还能拿去发朋友圈气死你同事。
             </p>
@@ -34,7 +34,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <p className="text-xs text-muted-foreground">
-              全程 30 秒 · 4 道单选题 · 结果可保存分享
+              全程约 2 分钟 · 32 道梯度题 · 结果可保存分享
             </p>
           </div>
 

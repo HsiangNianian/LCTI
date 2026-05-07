@@ -2,7 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { QuizProvider, useQuiz } from "@/lib/quiz-context";
-import { questions } from "@/lib/questions";
+import { dimensions, questions } from "@/lib/questions";
+import {
+  answerOptions,
+  calculateDimensionScores,
+  getResultBinaryString,
+  RESULT_THRESHOLD,
+  serializeDimensionScores,
+} from "@/lib/scoring";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,28 +21,34 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
+import { ArrowLeft, RotateCcw } from "lucide-react";
+import type { ScoreValue } from "@/lib/types";
 
-const progressLabels = [
-  "第一问：关于人性的拷问",
-  "第二问：关于虚荣心的拷问",
-  "第三问：关于责任感的拷问",
-  "最后一问！坚持住",
-];
+const DOT_SIZE_CLASSES = {
+  outer: "h-14 w-14",
+  middle: "h-11 w-11",
+  center: "h-8 w-8",
+} as const;
+const MIDDLE_DOT_VALUES = new Set<ScoreValue>([0.25, 0.75]);
+const DOT_OPTION_CARD_CLASSES =
+  "flex min-h-28 min-w-0 cursor-pointer items-center justify-center rounded-2xl border-2 p-2 transition-all hover:bg-muted/50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2";
 
 function QuizInner() {
   const router = useRouter();
   const { answers, currentQuestion, setAnswer, nextQuestion, prevQuestion, reset } = useQuiz();
   const question = questions[currentQuestion];
+  const dimension = dimensions[question.dimension];
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   const isLast = currentQuestion === questions.length - 1;
 
-  const currentAnswer = answers[question.dimension];
+  const currentAnswer = answers[question.id];
+  const selectedOption = answerOptions.find((option) => option.value === currentAnswer);
 
   const handleNext = () => {
     if (isLast) {
-      const bin = `${answers.collaboration}${answers.trust}${answers.liability}${answers.propagation}`;
-      router.push(`/result/${bin}`);
+      const scores = calculateDimensionScores(answers);
+      const bin = getResultBinaryString(scores);
+      router.push(`/result/${bin}?scores=${serializeDimensionScores(scores)}`);
     } else {
       nextQuestion();
     }
@@ -46,9 +59,7 @@ function QuizInner() {
       <div className="w-full max-w-xl mx-auto space-y-6">
         <div className="space-y-3">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <span className="font-medium">
-              {progressLabels[currentQuestion]}
-            </span>
+            <span className="font-medium">{dimension.label}</span>
             <button
               onClick={reset}
               className="inline-flex items-center gap-1 hover:text-foreground transition-colors text-xs"
@@ -60,11 +71,35 @@ function QuizInner() {
           <Progress value={progress} className="h-2.5" />
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>第 {currentQuestion + 1} / {questions.length} 题</span>
+            <span>{dimension.left} / {dimension.right}</span>
           </div>
         </div>
 
-        <Card key={question.id} className="border-t-4" style={{ borderTopColor: currentAnswer !== undefined ? (currentAnswer === 0 ? "#6366f1" : "#8b5cf6") : "transparent" }}>
+        <Card
+          key={question.id}
+          className="border-t-4"
+          style={{
+            borderTopColor:
+              currentAnswer !== undefined
+                ? currentAnswer < RESULT_THRESHOLD
+                  ? "#6366f1"
+                  : currentAnswer > RESULT_THRESHOLD
+                    ? "#8b5cf6"
+                    : "#64748b"
+                : "transparent",
+          }}
+        >
           <CardHeader>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="rounded-xl bg-indigo-500/10 px-4 py-3">
+                <p className="font-semibold text-indigo-600 dark:text-indigo-400">{dimension.left}</p>
+                <p className="mt-1 text-muted-foreground leading-relaxed">{dimension.leftDesc}</p>
+              </div>
+              <div className="rounded-xl bg-purple-500/10 px-4 py-3 text-right">
+                <p className="font-semibold text-purple-600 dark:text-purple-400">{dimension.right}</p>
+                <p className="mt-1 text-muted-foreground leading-relaxed">{dimension.rightDesc}</p>
+              </div>
+            </div>
             <CardTitle className="text-xl md:text-2xl leading-relaxed">
               {question.text}
             </CardTitle>
@@ -73,34 +108,52 @@ function QuizInner() {
             <RadioGroup
               value={currentAnswer?.toString() ?? ""}
               onValueChange={(v) => {
-                setAnswer(question.dimension, parseInt(v) as 0 | 1);
+                setAnswer(question.id, Number(v) as ScoreValue);
               }}
-              className="gap-3"
+              className="space-y-2"
             >
-              <div className="flex items-start gap-4 rounded-xl border-2 p-5 cursor-pointer transition-all has-data-[state=checked]:border-indigo-500 has-data-[state=checked]:bg-indigo-500/5 hover:bg-muted/50">
-                <RadioGroupItem value="0" id={`q${question.id}-left`} className="mt-0.5 data-[state=checked]:border-indigo-500 data-[state=checked]:bg-indigo-500" />
-                <Label
-                  htmlFor={`q${question.id}-left`}
-                  className="flex flex-col gap-1.5 cursor-pointer w-full"
-                >
-                  <span className="font-bold text-base">{question.leftLabel}</span>
-                  <span className="text-sm text-muted-foreground leading-relaxed">
-                    {question.leftDesc}
-                  </span>
-                </Label>
+              <div className="grid grid-cols-5 gap-2 sm:gap-3">
+                {answerOptions.map((option) => {
+                  const optionId = `q${question.id}-${option.value}`;
+                  const isLeft = option.value < RESULT_THRESHOLD;
+                  const isNeutral = option.value === RESULT_THRESHOLD;
+                  const dotSizeClasses = isNeutral
+                    ? DOT_SIZE_CLASSES.center
+                    : MIDDLE_DOT_VALUES.has(option.value)
+                      ? DOT_SIZE_CLASSES.middle
+                      : DOT_SIZE_CLASSES.outer;
+                  const activeClasses = isNeutral
+                    ? "has-data-[state=checked]:border-slate-500 has-data-[state=checked]:bg-slate-500/5"
+                    : isLeft
+                      ? "has-data-[state=checked]:border-indigo-500 has-data-[state=checked]:bg-indigo-500/5"
+                      : "has-data-[state=checked]:border-purple-500 has-data-[state=checked]:bg-purple-500/5";
+                  const dotClasses = isNeutral
+                    ? "border-slate-300 text-slate-500 data-[state=checked]:border-slate-500 data-[state=checked]:bg-slate-500"
+                    : isLeft
+                      ? "border-indigo-200 text-indigo-500 data-[state=checked]:border-indigo-500 data-[state=checked]:bg-indigo-500"
+                      : "border-purple-200 text-purple-500 data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500";
+
+                  return (
+                    <Label
+                      key={option.value}
+                      htmlFor={optionId}
+                      className={`${DOT_OPTION_CARD_CLASSES} ${activeClasses}`}
+                    >
+                      <RadioGroupItem
+                        value={option.value.toString()}
+                        id={optionId}
+                        aria-label={`${option.label}: ${option.description}`}
+                        className={`${dotSizeClasses} shrink-0 border-2 ${dotClasses}`}
+                      />
+                    </Label>
+                  );
+                })}
               </div>
-              <div className="flex items-start gap-4 rounded-xl border-2 p-5 cursor-pointer transition-all has-data-[state=checked]:border-purple-500 has-data-[state=checked]:bg-purple-500/5 hover:bg-muted/50">
-                <RadioGroupItem value="1" id={`q${question.id}-right`} className="mt-0.5 data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500" />
-                <Label
-                  htmlFor={`q${question.id}-right`}
-                  className="flex flex-col gap-1.5 cursor-pointer w-full"
-                >
-                  <span className="font-bold text-base">{question.rightLabel}</span>
-                  <span className="text-sm text-muted-foreground leading-relaxed">
-                    {question.rightDesc}
-                  </span>
-                </Label>
-              </div>
+              <p className="min-h-5 text-center text-sm text-muted-foreground">
+                {selectedOption
+                  ? `${selectedOption.label}: ${selectedOption.description}`
+                  : "点越大表示倾向越强，中间最小表示两边都能接受。"}
+              </p>
             </RadioGroup>
           </CardContent>
           <CardFooter className="flex justify-between gap-3">
@@ -120,7 +173,7 @@ function QuizInner() {
               disabled={currentAnswer === undefined}
               className="rounded-xl px-8 font-bold"
             >
-              {isLast ? "🔮 查看结果" : "下一题 →"}
+              {isLast ? "🔮 查看 16 型结果" : "下一题 →"}
             </Button>
           </CardFooter>
         </Card>

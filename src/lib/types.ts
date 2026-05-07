@@ -26,10 +26,10 @@ export interface Question {
   id: number;
   dimension: DimensionKey;
   text: string;
-  leftLabel: string;
-  rightLabel: string;
-  leftDesc: string;
-  rightDesc: string;
 }
 
-export type QuizAnswers = Record<DimensionKey, 0 | 1>;
+export type ScoreValue = 0 | 0.25 | 0.5 | 0.75 | 1;
+
+export type QuizAnswers = Record<number, ScoreValue | undefined>;
+
+export type DimensionScores = Record<DimensionKey, number>;
