@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "generate-badges": "npx tsx scripts/generate-badges.ts",
+    "dev": "npx tsx scripts/generate-badges.ts && next dev",
+    "build": "npx tsx scripts/generate-badges.ts && next build",
     "start": "next start",
     "lint": "eslint"
   },

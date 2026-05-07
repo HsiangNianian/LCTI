@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import { toPng } from "html-to-image";
 import QRCode from "qrcode";
 import type { DimensionScores, License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import { Download, Copy } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { Download, Copy, Check } from "lucide-react";
 import { dimensionOrder } from "@/lib/questions";
 import { RadarChart } from "@/components/radar-chart";
 
@@ -19,6 +21,8 @@ export function ResultContent({
   const cardRef = useRef<HTMLDivElement>(null);
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [copied, setCopied] = useState(false);
+  const [activeFormat, setActiveFormat] = useState<"md" | "rst" | "html">("md");
+  const [embedCopied, setEmbedCopied] = useState<string | null>(null);
   const hasDetailedScores = detailedScores !== null;
   const dimensionScores = hasDetailedScores
     ? dimensionOrder.map((dimension) => detailedScores[dimension])
@@ -33,6 +37,31 @@ export function ResultContent({
       color: { dark: "#171717", light: "#ffffff" },
     }).then(setQrDataUrl);
   }, []);
+
+  const origin = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    return window.location.origin;
+  }, []);
+
+  const badgeUrl = `${origin}/badge/${license.slug}.svg`;
+
+  const embedCodes: Record<string, string> = useMemo(() => ({
+    md: `![License Persona](${badgeUrl})`,
+    rst: `.. image:: ${badgeUrl}\n   :alt: License Persona`,
+    html: `<img src="${badgeUrl}" alt="License Persona" />`,
+  }), [badgeUrl]);
+
+  const handleCopyEmbed = async (format: string) => {
+    try {
+      await navigator.clipboard.writeText(embedCodes[format]);
+      setEmbedCopied(format);
+      setTimeout(() => setEmbedCopied(null), 2000);
+    } catch {
+      // fallback
+    }
+  };
+
+  const formatLabel: Record<string, string> = { md: "Markdown", rst: "RST", html: "HTML" };
 
   const handleSaveImage = async () => {
     const el = cardRef.current;
@@ -168,6 +197,61 @@ export function ResultContent({
           {copied ? "已复制！" : "复制链接"}
         </Button>
       </div>
+      </div>
+
+      {/* Embed badge */}
+      <div className="overflow-x-auto flex justify-center">
+      <Card className="w-[420px]">
+        <CardContent className="pt-4 space-y-4">
+          <div className="text-center space-y-1">
+            <p className="text-sm font-semibold">嵌入徽章</p>
+            <p className="text-xs text-muted-foreground">
+              在你的个人主页或 README 中展示你的许可证人格
+            </p>
+          </div>
+
+          {/* Badge preview */}
+          <div className="flex justify-center py-1">
+            <img src={badgeUrl} alt={`License Persona: ${license.name}`} className="h-5" />
+          </div>
+
+          {/* Format tabs */}
+          <div className="flex gap-1 bg-muted rounded-lg p-1">
+            {(["md", "rst", "html"] as const).map((fmt) => (
+              <button
+                key={fmt}
+                onClick={() => setActiveFormat(fmt)}
+                className={cn(
+                  "flex-1 text-xs font-medium py-1.5 rounded-md transition-colors",
+                  activeFormat === fmt
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {formatLabel[fmt]}
+              </button>
+            ))}
+          </div>
+
+          {/* Code block */}
+          <div className="relative">
+            <pre className="bg-muted rounded-lg p-3 pr-10 text-xs font-mono overflow-x-auto whitespace-pre-wrap break-all">
+              <code>{embedCodes[activeFormat]}</code>
+            </pre>
+            <button
+              onClick={() => handleCopyEmbed(activeFormat)}
+              className="absolute top-2 right-2 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-background transition-colors"
+              aria-label={`复制 ${formatLabel[activeFormat]} 代码`}
+            >
+              {embedCopied === activeFormat ? (
+                <Check className="h-3.5 w-3.5 text-green-500" />
+              ) : (
+                <Copy className="h-3.5 w-3.5" />
+              )}
+            </button>
+          </div>
+        </CardContent>
+      </Card>
       </div>
     </>
   );

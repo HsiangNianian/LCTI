@@ -20,7 +20,7 @@ export default function HomePage() {
               <br />
               用 0 到 1 的倾向分值，纯算法归纳你的 16 型开源人格。
               <br />
-              测完还能拿去发朋友圈气死你同事。
+              测完还能拿去发朋友圈气死你同事(bushi)
             </p>
           </div>
 
@@ -34,7 +34,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <p className="text-xs text-muted-foreground">
-              全程约 2 分钟 · 32 道梯度题 · 结果可保存分享
+              全程约 2 分钟 · 32 道梯度题
             </p>
           </div>
 
