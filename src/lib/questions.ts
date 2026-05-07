@@ -1,40 +1,206 @@
-import type { Question } from "./types";
+import type { Dimension, DimensionKey, Question } from "./types";
+
+export const dimensionOrder: DimensionKey[] = [
+  "collaboration",
+  "trust",
+  "liability",
+  "propagation",
+];
+
+export const dimensions: Record<DimensionKey, Dimension> = {
+  collaboration: {
+    key: "collaboration",
+    label: "协作态度",
+    left: "独行侠",
+    right: "布道者",
+    leftDesc: "更强调自由传承与开源延续",
+    rightDesc: "更强调开放使用与广泛采用",
+  },
+  trust: {
+    key: "trust",
+    label: "信任模式",
+    left: "审计员",
+    right: "乐捐者",
+    leftDesc: "更在意署名、可追溯性与边界说明",
+    rightDesc: "更在意流通效率与低门槛复用",
+  },
+  liability: {
+    key: "liability",
+    label: "责任边界",
+    left: "盾牌手",
+    right: "冒险家",
+    leftDesc: "更看重免责条款、风险隔离与责任边界",
+    rightDesc: "更接受少约束、重实践的发布方式",
+  },
+  propagation: {
+    key: "propagation",
+    label: "传播执念",
+    left: "传教士",
+    right: "实用派",
+    leftDesc: "更希望改动持续回流并保持同类开放",
+    rightDesc: "更接受与闭源、商业生态自由混搭",
+  },
+};
 
 export const questions: Question[] = [
   {
     id: 1,
     dimension: "collaboration",
-    text: "你半夜肝出来的神级库，被 fork 后闭源卖钱了，你：",
-    leftLabel: "淦！必须开源衍生代码",
-    rightLabel: "随他去吧，代码能帮到人就行",
-    leftDesc: "Copyleft 派 — 代码的命也是命，不能变黑盒",
-    rightDesc: "Permissive 派 — 格局打开，使用方式不归我管",
+    text: "你写的核心库被 fork 后改造成闭源 SaaS 产品，你更能接受哪种处理方式？",
   },
   {
     id: 2,
-    dimension: "trust",
-    text: "有人用了你的代码，README 里提都没提你名字，你：",
-    leftLabel: "我那么大个名字看不见？？",
-    rightLabel: "害，不提也罢，代码有用就行",
-    leftDesc: "审计员模式 — 署名是基本尊重，写在 README 第一行",
-    rightDesc: "乐捐者模式 — 代码比我名字重要，低调才是真",
+    dimension: "collaboration",
+    text: "某团队把你的项目改得面目全非后重新发布，你会更希望他们：",
   },
   {
     id: 3,
-    dimension: "liability",
-    text: "有人拿你的库在生产环境跑出了事故，你觉得：",
-    leftLabel: "与我无关，免责声明早写好了",
-    rightLabel: "代码写了就有风险，这不怪我",
-    leftDesc: "盾牌手 — 法律上把锅甩得比博尔特还快",
-    rightDesc: "冒险家 — 敢用就别怕，程序员要有担当（手动狗头）",
+    dimension: "collaboration",
+    text: "如果别人把你的代码打包进商业桌面软件，你对“是否必须公开修改”更偏向：",
   },
   {
     id: 4,
+    dimension: "collaboration",
+    text: "你更喜欢自己的项目成为“自由传承的公共基础设施”，还是“谁都能拿来即用的积木”？",
+  },
+  {
+    id: 5,
+    dimension: "collaboration",
+    text: "当社区成员基于你的项目做大型二次开发时，你更希望他们：",
+  },
+  {
+    id: 6,
+    dimension: "collaboration",
+    text: "你怎么看“拿来主义”式复用你的代码而不回传改动？",
+  },
+  {
+    id: 7,
+    dimension: "collaboration",
+    text: "如果你的工具链被嵌入某个企业私有平台，你更倾向于：",
+  },
+  {
+    id: 8,
+    dimension: "collaboration",
+    text: "你理想中的开源协作，更接近“保证所有衍生成果继续开放”还是“先让使用范围最大化”？",
+  },
+  {
+    id: 9,
+    dimension: "trust",
+    text: "别人用了你的代码却没在 README 里提到你，你会更在意：",
+  },
+  {
+    id: 10,
+    dimension: "trust",
+    text: "项目被大量转发和搬运时，你更希望保留的东西是：",
+  },
+  {
+    id: 11,
+    dimension: "trust",
+    text: "如果有人删掉作者信息但保留代码，你的第一反应更接近：",
+  },
+  {
+    id: 12,
+    dimension: "trust",
+    text: "你更认同“署名是基本尊重”，还是“降低使用门槛更重要”？",
+  },
+  {
+    id: 13,
+    dimension: "trust",
+    text: "对于第三方分发你的代码时附不附原始声明，你的态度更偏向：",
+  },
+  {
+    id: 14,
+    dimension: "trust",
+    text: "如果别人拿你的项目做教材或课程，你更希望他们：",
+  },
+  {
+    id: 15,
+    dimension: "trust",
+    text: "看到别人引用你的仓库却只说“来自互联网”，你更容易觉得：",
+  },
+  {
+    id: 16,
+    dimension: "trust",
+    text: "在版权声明和传播效率之间，你通常更优先考虑：",
+  },
+  {
+    id: 17,
+    dimension: "liability",
+    text: "你的库被用于生产环境并引发事故时，你更希望许可证：",
+  },
+  {
+    id: 18,
+    dimension: "liability",
+    text: "面对“免责声明要不要写得很硬”这个问题，你通常倾向：",
+  },
+  {
+    id: 19,
+    dimension: "liability",
+    text: "如果别人因为误用你的代码导致损失，你觉得许可证最该强调：",
+  },
+  {
+    id: 20,
+    dimension: "liability",
+    text: "你更喜欢“风险边界写清楚”，还是“默认大家自己承担实践风险”的氛围？",
+  },
+  {
+    id: 21,
+    dimension: "liability",
+    text: "别人问你为什么 LICENSE 里有一大段免责文字时，你更可能回答：",
+  },
+  {
+    id: 22,
+    dimension: "liability",
+    text: "你对“许可证越短越好”这件事，在责任条款上更偏向：",
+  },
+  {
+    id: 23,
+    dimension: "liability",
+    text: "如果你的项目可能涉及专利或合规风险，你更希望：",
+  },
+  {
+    id: 24,
+    dimension: "liability",
+    text: "从法律视角看，你更想把许可证写成：",
+  },
+  {
+    id: 25,
     dimension: "propagation",
-    text: "你的代码生态应该怎么发展？",
-    leftLabel: "世界和平的前提是自由",
-    rightLabel: "商业也是生态的一部分",
-    leftDesc: "传教士 — 你的代码必须保持自由，没得商量",
-    rightDesc: "实用派 — 只要能让生态繁荣，闭源也能接受",
+    text: "你更希望别人修改你的代码后继续使用同类开放许可证，还是随他们挑选新协议？",
+  },
+  {
+    id: 26,
+    dimension: "propagation",
+    text: "看到自己的项目被整合进闭源产品时，你更可能在意：",
+  },
+  {
+    id: 27,
+    dimension: "propagation",
+    text: "如果改动后的版本只在网络服务中运行，不对外分发，你更希望：",
+  },
+  {
+    id: 28,
+    dimension: "propagation",
+    text: "对“衍生作品必须继续开放”这件事，你的直觉更接近：",
+  },
+  {
+    id: 29,
+    dimension: "propagation",
+    text: "你更支持“把改动还给社区”，还是“先让商业采用没有顾虑”？",
+  },
+  {
+    id: 30,
+    dimension: "propagation",
+    text: "如果你的代码被链接进大型闭源系统，你更希望许可证：",
+  },
+  {
+    id: 31,
+    dimension: "propagation",
+    text: "你更赞同“自由必须会传染”，还是“兼容现实生态更重要”？",
+  },
+  {
+    id: 32,
+    dimension: "propagation",
+    text: "对于二次分发者是否必须保持相同开放力度，你整体态度更偏向：",
   },
 ];
