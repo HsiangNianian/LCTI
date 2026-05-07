@@ -24,6 +24,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ArrowLeft, RotateCcw } from "lucide-react";
 import type { ScoreValue } from "@/lib/types";
 
+const DOT_SIZE_CLASSES = {
+  outer: "h-14 w-14",
+  middle: "h-11 w-11",
+  center: "h-8 w-8",
+} as const;
+const MIDDLE_DOT_VALUES = new Set<ScoreValue>([0.25, 0.75]);
+
 function QuizInner() {
   const router = useRouter();
   const { answers, currentQuestion, setAnswer, nextQuestion, prevQuestion, reset } = useQuiz();
@@ -108,10 +115,10 @@ function QuizInner() {
                   const isLeft = option.value < RESULT_THRESHOLD;
                   const isNeutral = option.value === RESULT_THRESHOLD;
                   const dotSizeClasses = isNeutral
-                    ? "h-8 w-8"
-                    : option.value === 0.25 || option.value === 0.75
-                      ? "h-11 w-11"
-                      : "h-14 w-14";
+                    ? DOT_SIZE_CLASSES.center
+                    : MIDDLE_DOT_VALUES.has(option.value)
+                      ? DOT_SIZE_CLASSES.middle
+                      : DOT_SIZE_CLASSES.outer;
                   const activeClasses = isNeutral
                     ? "has-data-[state=checked]:border-slate-500 has-data-[state=checked]:bg-slate-500/10"
                     : isLeft
@@ -127,7 +134,7 @@ function QuizInner() {
                     <Label
                       key={option.value}
                       htmlFor={optionId}
-                      className={`flex h-28 min-w-0 cursor-pointer items-center justify-center rounded-2xl border-2 p-2 transition-all hover:bg-muted/50 ${activeClasses}`}
+                      className={`flex min-h-28 min-w-0 cursor-pointer items-center justify-center rounded-2xl border-2 p-2 transition-all hover:bg-muted/50 ${activeClasses}`}
                     >
                       <RadioGroupItem
                         value={option.value.toString()}
@@ -135,7 +142,6 @@ function QuizInner() {
                         aria-label={option.label}
                         className={`${dotSizeClasses} shrink-0 border-2 ${dotClasses}`}
                       />
-                      <span className="sr-only">{option.label}</span>
                     </Label>
                   );
                 })}
