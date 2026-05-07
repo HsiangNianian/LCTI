@@ -1,0 +1,75 @@
+{
+  "layout": {
+    "title": "ライセンス人格診断 | あなたの魂のオープンソースライセンスは？",
+    "description": "MBTI 風の純アルゴリズムテスト。32 段階の質問で、あなたに最も適したオープンソースライセンスを特定します。AI 不要、オカルト不要、コード世界の性格診断です〜"
+  },
+  "themeToggle": {
+    "aria": "テーマ切り替え"
+  },
+  "localeSwitcher": {
+    "label": "言語"
+  },
+  "hero": {
+    "badge": "LCTI — License Type Indicator",
+    "heading": "あなたの魂の\nオープンソースライセンスは？",
+    "body1": "32 の漸進的な質問で、",
+    "highlight": "AI もオカルトも一切不要",
+    "body2": "0 から 1 の傾向スコアで、16 タイプのオープンソース人格を純アルゴリズムで判定。",
+    "body3": "結果をシェアして同僚を驚かせよう（冗談です）",
+    "cta": "テストを開始 →",
+    "subtitle": "約 2 分 · 32 の段階的質問"
+  },
+  "footer": {
+    "disclaimer": "IANAL — このテストは法的助言を構成するものではなく、娯楽目的です"
+  },
+  "quiz": {
+    "reset": "リセット",
+    "progress": "Q{current} / {total}",
+    "hint": "ドットが大きいほど傾向が強く、中央が最も小さい＝中立です。",
+    "prev": "← 戻る",
+    "next": "次へ →",
+    "submit": "🔮 16 タイプの結果を見る"
+  },
+  "result": {
+    "notFound": "結果が見つかりません",
+    "title": "私の魂のライセンスは {name} — {title} | LCTI",
+    "retake": "← 納得いかない？もう一度テストする",
+    "missingScores": "この共有リンクには詳細スコアが含まれていません。レーダーチャートは結果タイプに基づいて端点傾向を表示します。",
+    "qrCta": "スキャンしてあなたの魂のライセンスを診断",
+    "qrAlt": "QR コードをスキャン",
+    "saveCard": "カードを保存",
+    "copied": "コピーしました！",
+    "copyLink": "リンクをコピー",
+    "embedButton": "バッジを埋め込む",
+    "embedTitle": "バッジを埋め込む",
+    "embedDesc": "プロフィールや README でライセンス人格を表示",
+    "md": "Markdown",
+    "rst": "RST",
+    "html": "HTML",
+    "copyAria": "{format} コードをコピー"
+  },
+  "notFound": {
+    "label": "404",
+    "title": "ライセンスが見つかりません",
+    "desc": "お探しの結果は存在しません。もう一度テストしてみませんか？",
+    "home": "ホームに戻る"
+  },
+  "scoring": {
+    "option0": "強く左寄り",
+    "option25": "やや左寄り",
+    "option50": "中立",
+    "option75": "やや右寄り",
+    "option1": "強く右寄り",
+    "desc0": "左側の立場に強く同意",
+    "desc25": "全体的に左寄り",
+    "desc50": "中央付近",
+    "desc75": "全体的に右寄り",
+    "desc1": "右側の立場に強く同意"
+  },
+  "dimensions": {
+    "collaboration": "協調姿勢",
+    "trust": "信頼モデル",
+    "liability": "責任範囲",
+    "propagation": "伝播指向"
+  }
+}
