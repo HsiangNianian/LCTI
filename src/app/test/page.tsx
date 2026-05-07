@@ -42,6 +42,7 @@ function QuizInner() {
   const isLast = currentQuestion === questions.length - 1;
 
   const currentAnswer = answers[question.id];
+  const selectedOption = answerOptions.find((option) => option.value === currentAnswer);
 
   const handleNext = () => {
     if (isLast) {
@@ -122,10 +123,10 @@ function QuizInner() {
                       ? DOT_SIZE_CLASSES.middle
                       : DOT_SIZE_CLASSES.outer;
                   const activeClasses = isNeutral
-                    ? "has-data-[state=checked]:border-slate-500 has-data-[state=checked]:bg-slate-500/10"
+                    ? "has-data-[state=checked]:border-slate-500 has-data-[state=checked]:bg-slate-500/5"
                     : isLeft
-                      ? "has-data-[state=checked]:border-indigo-500 has-data-[state=checked]:bg-indigo-500/10"
-                      : "has-data-[state=checked]:border-purple-500 has-data-[state=checked]:bg-purple-500/10";
+                      ? "has-data-[state=checked]:border-indigo-500 has-data-[state=checked]:bg-indigo-500/5"
+                      : "has-data-[state=checked]:border-purple-500 has-data-[state=checked]:bg-purple-500/5";
                   const dotClasses = isNeutral
                     ? "border-slate-300 text-slate-500 data-[state=checked]:border-slate-500 data-[state=checked]:bg-slate-500"
                     : isLeft
@@ -136,7 +137,6 @@ function QuizInner() {
                     <Label
                       key={option.value}
                       htmlFor={optionId}
-                      title={`${option.label}: ${option.description}`}
                       className={`${DOT_OPTION_CARD_CLASSES} ${activeClasses}`}
                     >
                       <RadioGroupItem
@@ -149,6 +149,11 @@ function QuizInner() {
                   );
                 })}
               </div>
+              <p className="min-h-5 text-center text-sm text-muted-foreground">
+                {selectedOption
+                  ? `${selectedOption.label}: ${selectedOption.description}`
+                  : "点越大表示倾向越强，中间最小表示两边都能接受。"}
+              </p>
             </RadioGroup>
           </CardContent>
           <CardFooter className="flex justify-between gap-3">
