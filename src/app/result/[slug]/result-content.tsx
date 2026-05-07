@@ -1,14 +1,13 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import { toPng } from "html-to-image";
 import QRCode from "qrcode";
-import type { License } from "@/lib/types";
+import type { DimensionScores, License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Download, Copy } from "lucide-react";
 import { dimensionOrder, dimensions } from "@/lib/questions";
-import { parseDimensionScores, RESULT_THRESHOLD } from "@/lib/scoring";
+import { RESULT_THRESHOLD } from "@/lib/scoring";
 
 function DimensionBar({
   value,
@@ -52,15 +51,19 @@ function DimensionBar({
   );
 }
 
-export function ResultContent({ license }: { license: License }) {
-  const searchParams = useSearchParams();
+export function ResultContent({
+  license,
+  dimensionScores: detailedScores,
+}: {
+  license: License;
+  dimensionScores: DimensionScores | null;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [copied, setCopied] = useState(false);
-  const parsedScores = parseDimensionScores(searchParams.get("scores"));
-  const hasDetailedScores = parsedScores !== null;
+  const hasDetailedScores = detailedScores !== null;
   const dimensionScores = hasDetailedScores
-    ? dimensionOrder.map((dimension) => parsedScores[dimension])
+    ? dimensionOrder.map((dimension) => detailedScores[dimension])
     // Shared result links may only carry the 4-bit slug, so the fallback intentionally snaps each dimension to its endpoint.
     : license.binary.map((value) => (value === 1 ? 1 : 0));
 
