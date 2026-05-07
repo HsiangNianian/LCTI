@@ -33,7 +33,7 @@ export function calculateDimensionScores(answers: QuizAnswers): DimensionScores 
 }
 
 export function getResultBinaryString(scores: DimensionScores): string {
-  // Midpoint answers resolve to the right-side trait so every completed run still maps to one of the 16 fixed result types.
+  // A dimension average of exactly 0.5 intentionally resolves to the right-side trait so every completed run maps to one of the 16 fixed result types.
   return dimensionOrder.map((dimension) => (scores[dimension] >= RESULT_THRESHOLD ? "1" : "0")).join("");
 }
 
@@ -45,7 +45,10 @@ export function parseDimensionScores(value: string | null): DimensionScores | nu
   if (!value) return null;
 
   const parsed = value.split(",").map((item) => Number(item));
-  if (parsed.length !== dimensionOrder.length || parsed.some((item) => Number.isNaN(item) || item < 0 || item > 1)) {
+  const hasInvalidLength = parsed.length !== dimensionOrder.length;
+  const hasInvalidValues = parsed.some((item) => Number.isNaN(item) || item < 0 || item > 1);
+
+  if (hasInvalidLength || hasInvalidValues) {
     return null;
   }
 
