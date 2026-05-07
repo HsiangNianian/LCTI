@@ -26,6 +26,8 @@ export interface Question {
   id: number;
   dimension: DimensionKey;
   text: string;
+  leftAnswer: string;
+  rightAnswer: string;
 }
 
 export type ScoreValue = 0 | 0.25 | 0.5 | 0.75 | 1;
