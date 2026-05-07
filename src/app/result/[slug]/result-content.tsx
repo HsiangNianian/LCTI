@@ -1,18 +1,14 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { toPng } from "html-to-image";
 import QRCode from "qrcode";
 import type { License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Download, Copy } from "lucide-react";
-
-const dimensionLabels = [
-  { left: "独行侠", right: "布道者" },
-  { left: "审计员", right: "乐捐者" },
-  { left: "盾牌手", right: "冒险家" },
-  { left: "传教士", right: "实用派" },
-];
+import { dimensionOrder, dimensions } from "@/lib/questions";
+import { parseDimensionScores } from "@/lib/scoring";
 
 function DimensionBar({
   value,
@@ -26,10 +22,10 @@ function DimensionBar({
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between text-xs">
-        <span className={value === 0 ? "font-bold text-foreground" : "text-muted-foreground"}>
+        <span className={value < 0.5 ? "font-bold text-foreground" : "text-muted-foreground"}>
           {left}
         </span>
-        <span className={value === 1 ? "font-bold text-foreground" : "text-muted-foreground"}>
+        <span className={value > 0.5 ? "font-bold text-foreground" : "text-muted-foreground"}>
           {right}
         </span>
       </div>
@@ -37,14 +33,18 @@ function DimensionBar({
         <div
           className="absolute h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
           style={{
-            width: "50%",
-            left: value === 0 ? "0%" : "50%",
+            width: `${Math.max(value * 100, value === 0 ? 0 : 6)}%`,
           }}
         />
         <div
           className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-white dark:bg-zinc-900 border-2 border-indigo-500 shadow-sm"
           style={{
-            left: value === 0 ? "0%" : "calc(100% - 1rem)",
+            left:
+              value <= 0
+                ? "0.5rem"
+                : value >= 1
+                  ? "calc(100% - 0.5rem)"
+                  : `calc(${value * 100}% - 0.5rem)`,
           }}
         />
       </div>
@@ -53,9 +53,14 @@ function DimensionBar({
 }
 
 export function ResultContent({ license }: { license: License }) {
+  const searchParams = useSearchParams();
   const cardRef = useRef<HTMLDivElement>(null);
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [copied, setCopied] = useState(false);
+  const parsedScores = parseDimensionScores(searchParams.get("scores"));
+  const dimensionScores = parsedScores
+    ? dimensionOrder.map((dimension) => parsedScores[dimension])
+    : license.binary;
 
   useEffect(() => {
     const url = window.location.origin + "/test";
@@ -152,12 +157,12 @@ export function ResultContent({ license }: { license: License }) {
               <p className="text-xs font-semibold text-center text-muted-foreground uppercase tracking-wider">
                 人格维度
               </p>
-              {license.binary.map((value, i) => (
+              {dimensionScores.map((value, i) => (
                 <DimensionBar
                   key={i}
                   value={value}
-                  left={dimensionLabels[i].left}
-                  right={dimensionLabels[i].right}
+                  left={dimensions[dimensionOrder[i]].left}
+                  right={dimensions[dimensionOrder[i]].right}
                 />
               ))}
             </div>
