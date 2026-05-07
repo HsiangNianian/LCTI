@@ -1,0 +1,75 @@
+{
+  "layout": {
+    "title": "开源许可证人格测试 | 你的灵魂开源许可证是什么？",
+    "description": "一套基于 MBTI 风格的纯算法测试，通过 32 道梯度题精准定位你最契合的开源许可证。没有 AI，没有玄学，只有代码世界的性格真相~"
+  },
+  "themeToggle": {
+    "aria": "主题切换"
+  },
+  "localeSwitcher": {
+    "label": "语言"
+  },
+  "hero": {
+    "badge": "LCTI — License Type Indicator",
+    "heading": "你的灵魂\n开源许可证是什么？",
+    "body1": "32 道渐进式灵魂拷问，",
+    "highlight": "零 AI、零玄学",
+    "body2": "用 0 到 1 的倾向分值，纯算法归纳你的 16 型开源人格。",
+    "body3": "测完还能拿去发朋友圈气死你同事(bushi)",
+    "cta": "开始测试 →",
+    "subtitle": "全程约 2 分钟 · 32 道梯度题"
+  },
+  "footer": {
+    "disclaimer": "IANAL — 本测试结果不构成法律建议，仅供娱乐"
+  },
+  "quiz": {
+    "reset": "重来",
+    "progress": "第 {current} / {total} 题",
+    "hint": "点越大表示倾向越强，中间最小表示两边都能接受。",
+    "prev": "上一题",
+    "next": "下一题 →",
+    "submit": "🔮 查看 16 型结果"
+  },
+  "result": {
+    "notFound": "未找到结果",
+    "title": "我的灵魂许可证是 {name} — {title} | LCTI",
+    "retake": "← 不信？再测一次",
+    "missingScores": "当前分享链接未附带细分分值，雷达图按结果类型显示为端点倾向。",
+    "qrCta": "扫码测你的灵魂开源许可证",
+    "qrAlt": "扫码测试",
+    "saveCard": "保存卡片",
+    "copied": "已复制！",
+    "copyLink": "复制链接",
+    "embedButton": "嵌入徽章",
+    "embedTitle": "嵌入徽章",
+    "embedDesc": "在你的个人主页或 README 中展示你的许可证人格",
+    "md": "Markdown",
+    "rst": "RST",
+    "html": "HTML",
+    "copyAria": "复制 {format} 代码"
+  },
+  "notFound": {
+    "label": "404",
+    "title": "没有这个许可证",
+    "desc": "你找的结果不存在，也许该重新测一次？",
+    "home": "回到首页"
+  },
+  "scoring": {
+    "option0": "非常偏向左边",
+    "option25": "稍微偏向左边",
+    "option50": "两边都能接受",
+    "option75": "稍微偏向右边",
+    "option1": "非常偏向右边",
+    "desc0": "强烈认同左侧立场",
+    "desc25": "整体更靠近左侧",
+    "desc50": "倾向接近中间值",
+    "desc75": "整体更靠近右侧",
+    "desc1": "强烈认同右侧立场"
+  },
+  "dimensions": {
+    "collaboration": "协作态度",
+    "trust": "信任模式",
+    "liability": "责任边界",
+    "propagation": "传播执念"
+  }
+}

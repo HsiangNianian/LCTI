@@ -1,0 +1,75 @@
+{
+  "layout": {
+    "title": "License Persona Test | What's Your Soul Open Source License?",
+    "description": "A pure algorithm-based test in the spirit of MBTI — 32 gradient questions to pinpoint the open source license that best fits your personality. No AI, no mysticism, just the truth of the code world~"
+  },
+  "themeToggle": {
+    "aria": "Toggle theme"
+  },
+  "localeSwitcher": {
+    "label": "Language"
+  },
+  "hero": {
+    "badge": "LCTI — License Type Indicator",
+    "heading": "What's Your\nSoul Open Source License?",
+    "body1": "32 progressive soul-searching questions,",
+    "highlight": "zero AI, zero mysticism",
+    "body2": "using 0-to-1 gradient scoring to algorithmically map your 16-type open source persona.",
+    "body3": "Share the result and annoy your colleagues (just kidding)",
+    "cta": "Start Test →",
+    "subtitle": "About 2 min · 32 gradient questions"
+  },
+  "footer": {
+    "disclaimer": "IANAL — This test does not constitute legal advice, for entertainment only"
+  },
+  "quiz": {
+    "reset": "Reset",
+    "progress": "Q{current} / {total}",
+    "hint": "The larger the dot, the stronger the倾向. The middle is the smallest — that's the neutral position.",
+    "prev": "← Previous",
+    "next": "Next →",
+    "submit": "🔮 View 16-Type Result"
+  },
+  "result": {
+    "notFound": "Result not found",
+    "title": "My soul license is {name} — {title} | LCTI",
+    "retake": "← Not convinced? Test again",
+    "missingScores": "This shared link did not carry detailed scores. The radar chart shows endpoint tendencies based on the result type.",
+    "qrCta": "Scan to find your soul open source license",
+    "qrAlt": "Scan QR code",
+    "saveCard": "Save Card",
+    "copied": "Copied!",
+    "copyLink": "Copy Link",
+    "embedButton": "Embed Badge",
+    "embedTitle": "Embed Badge",
+    "embedDesc": "Show your license persona on your profile or README",
+    "md": "Markdown",
+    "rst": "RST",
+    "html": "HTML",
+    "copyAria": "Copy {format} code"
+  },
+  "notFound": {
+    "label": "404",
+    "title": "License Not Found",
+    "desc": "The result you're looking for doesn't exist. Maybe take the test again?",
+    "home": "Back to Home"
+  },
+  "scoring": {
+    "option0": "Strongly Left",
+    "option25": "Slightly Left",
+    "option50": "Neutral",
+    "option75": "Slightly Right",
+    "option1": "Strongly Right",
+    "desc0": "Strongly agree with the left stance",
+    "desc25": "Overall closer to the left",
+    "desc50": "Tendency near the middle",
+    "desc75": "Overall closer to the right",
+    "desc1": "Strongly agree with the right stance"
+  },
+  "dimensions": {
+    "collaboration": "Collaboration",
+    "trust": "Trust",
+    "liability": "Liability",
+    "propagation": "Propagation"
+  }
+}
