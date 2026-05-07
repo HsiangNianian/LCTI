@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { toPng } from "html-to-image";
+import html2canvas from "html2canvas";
 import QRCode from "qrcode";
 import type { License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -69,13 +69,13 @@ export function ResultContent({ license }: { license: License }) {
   const handleSaveImage = async () => {
     if (!cardRef.current) return;
     try {
-      const dataUrl = await toPng(cardRef.current, {
-        quality: 0.95,
-        pixelRatio: 2,
+      const canvas = await html2canvas(cardRef.current, {
+        scale: 2,
+        useCORS: true,
       });
       const link = document.createElement("a");
       link.download = `license-persona-${license.slug}.png`;
-      link.href = dataUrl;
+      link.href = canvas.toDataURL("image/png");
       link.click();
     } catch (err) {
       console.error("Failed to generate image", err);

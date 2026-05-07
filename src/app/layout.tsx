@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "开源许可证人格测试 | 你的灵魂开源许可证是什么？",
   description:
-    "一套基于 MBTI 风格的纯算法测试，通过 4 道题精准定位你最契合的开源许可证。没有 AI，没有玄学，只有代码世界的性格真相。",
+    "一套基于 MBTI 风格的纯算法测试，通过 4 道题精准定位你最契合的开源许可证。没有 AI，没有玄学，只有代码世界的性格真相~",
 };
 
 export default function RootLayout({

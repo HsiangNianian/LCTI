@@ -8,7 +8,7 @@ export default function HomePage() {
         <div className="max-w-xl mx-auto space-y-10">
           <div className="space-y-5">
             <div className="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
-              🧪 不是 MBTI，而是 LCTI — License Type Indicator
+              LCTI — License Type Indicator
             </div>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
               你的灵魂
