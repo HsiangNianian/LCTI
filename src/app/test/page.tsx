@@ -100,41 +100,46 @@ function QuizInner() {
               onValueChange={(v) => {
                 setAnswer(question.id, Number(v) as ScoreValue);
               }}
-              className="gap-3"
+              className="space-y-2"
             >
-              {answerOptions.map((option) => {
-                const optionId = `q${question.id}-${option.value}`;
-                const isLeft = option.value < RESULT_THRESHOLD;
-                const isNeutral = option.value === RESULT_THRESHOLD;
-                const activeClasses = isNeutral
-                  ? "has-data-[state=checked]:border-slate-500 has-data-[state=checked]:bg-slate-500/5"
-                  : isLeft
-                    ? "has-data-[state=checked]:border-indigo-500 has-data-[state=checked]:bg-indigo-500/5"
-                    : "has-data-[state=checked]:border-purple-500 has-data-[state=checked]:bg-purple-500/5";
-                const radioClasses = isNeutral
-                  ? "data-[state=checked]:border-slate-500 data-[state=checked]:bg-slate-500"
-                  : isLeft
-                    ? "data-[state=checked]:border-indigo-500 data-[state=checked]:bg-indigo-500"
-                    : "data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500";
+              <div className="grid grid-cols-5 gap-2 sm:gap-3">
+                {answerOptions.map((option) => {
+                  const optionId = `q${question.id}-${option.value}`;
+                  const isLeft = option.value < RESULT_THRESHOLD;
+                  const isNeutral = option.value === RESULT_THRESHOLD;
+                  const dotSizeClasses = isNeutral
+                    ? "h-8 w-8"
+                    : option.value === 0.25 || option.value === 0.75
+                      ? "h-11 w-11"
+                      : "h-14 w-14";
+                  const activeClasses = isNeutral
+                    ? "has-data-[state=checked]:border-slate-500 has-data-[state=checked]:bg-slate-500/10"
+                    : isLeft
+                      ? "has-data-[state=checked]:border-indigo-500 has-data-[state=checked]:bg-indigo-500/10"
+                      : "has-data-[state=checked]:border-purple-500 has-data-[state=checked]:bg-purple-500/10";
+                  const dotClasses = isNeutral
+                    ? "border-slate-300 text-slate-500 data-[state=checked]:border-slate-500 data-[state=checked]:bg-slate-500"
+                    : isLeft
+                      ? "border-indigo-200 text-indigo-500 data-[state=checked]:border-indigo-500 data-[state=checked]:bg-indigo-500"
+                      : "border-purple-200 text-purple-500 data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500";
 
-                return (
-                  <div
-                    key={option.value}
-                    className={`flex items-start gap-4 rounded-xl border-2 p-5 cursor-pointer transition-all hover:bg-muted/50 ${activeClasses}`}
-                  >
-                    <RadioGroupItem value={option.value.toString()} id={optionId} className={`mt-0.5 ${radioClasses}`} />
+                  return (
                     <Label
+                      key={option.value}
                       htmlFor={optionId}
-                      className="flex flex-col gap-1.5 cursor-pointer w-full"
+                      className={`flex h-28 min-w-0 cursor-pointer items-center justify-center rounded-2xl border-2 p-2 transition-all hover:bg-muted/50 ${activeClasses}`}
                     >
-                      <span className="font-bold text-base">{option.label}</span>
-                      <span className="text-sm text-muted-foreground leading-relaxed">
-                        {option.description}
-                      </span>
+                      <RadioGroupItem
+                        value={option.value.toString()}
+                        id={optionId}
+                        aria-label={option.label}
+                        className={`${dotSizeClasses} shrink-0 border-2 ${dotClasses}`}
+                      />
+                      <span className="sr-only">{option.label}</span>
                     </Label>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </RadioGroup>
           </CardContent>
           <CardFooter className="flex justify-between gap-3">
