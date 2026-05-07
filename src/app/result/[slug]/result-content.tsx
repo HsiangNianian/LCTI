@@ -73,11 +73,6 @@ export function ResultContent({ license }: { license: License }) {
       const dataUrl = await toPng(el, {
         quality: 0.95,
         pixelRatio: 2,
-        width: 420,
-        height: el.scrollHeight,
-        style: {
-          transform: "none",
-        },
       });
       const link = document.createElement("a");
       link.download = `license-persona-${license.slug}.png`;
