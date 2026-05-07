@@ -58,7 +58,8 @@ export function ResultContent({ license }: { license: License }) {
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const parsedScores = parseDimensionScores(searchParams.get("scores"));
-  const dimensionScores = parsedScores
+  const hasDetailedScores = parsedScores !== null;
+  const dimensionScores = hasDetailedScores
     ? dimensionOrder.map((dimension) => parsedScores[dimension])
     // Shared result links may only carry the 4-bit slug, so the fallback intentionally snaps each dimension to its endpoint.
     : license.binary.map((value) => (value === 1 ? 1 : 0));
@@ -166,6 +167,11 @@ export function ResultContent({ license }: { license: License }) {
                   right={dimensions[dimensionOrder[i]].right}
                 />
               ))}
+              {!hasDetailedScores && (
+                <p className="text-[11px] text-center text-muted-foreground leading-relaxed">
+                  当前分享链接未附带细分分值，维度条按结果类型显示为端点倾向。
+                </p>
+              )}
             </div>
           </div>
 
