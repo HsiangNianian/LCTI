@@ -140,7 +140,7 @@ function QuizInner() {
                       <RadioGroupItem
                         value={option.value.toString()}
                         id={optionId}
-                        aria-label={`${question.text}, ${option.label}, ${option.description}`}
+                        aria-label={`题目：${question.text}。选项：${option.label}。说明：${option.description}。`}
                         className={`${dotSizeClasses} shrink-0 border-2 ${dotClasses}`}
                       />
                     </Label>
