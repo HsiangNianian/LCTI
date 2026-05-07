@@ -7,6 +7,7 @@ import {
   answerOptions,
   calculateDimensionScores,
   getResultBinaryString,
+  RESULT_THRESHOLD,
   serializeDimensionScores,
 } from "@/lib/scoring";
 import { Button } from "@/components/ui/button";
@@ -70,9 +71,11 @@ function QuizInner() {
           style={{
             borderTopColor:
               currentAnswer !== undefined
-                ? currentAnswer <= 0.5
+                ? currentAnswer < RESULT_THRESHOLD
                   ? "#6366f1"
-                  : "#8b5cf6"
+                  : currentAnswer > RESULT_THRESHOLD
+                    ? "#8b5cf6"
+                    : "#64748b"
                 : "transparent",
           }}
         >
@@ -101,8 +104,8 @@ function QuizInner() {
             >
               {answerOptions.map((option) => {
                 const optionId = `q${question.id}-${option.value}`;
-                const isLeft = option.value < 0.5;
-                const isNeutral = option.value === 0.5;
+                const isLeft = option.value < RESULT_THRESHOLD;
+                const isNeutral = option.value === RESULT_THRESHOLD;
                 const activeClasses = isNeutral
                   ? "has-data-[state=checked]:border-slate-500 has-data-[state=checked]:bg-slate-500/5"
                   : isLeft

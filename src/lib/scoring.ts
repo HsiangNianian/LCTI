@@ -1,6 +1,8 @@
 import { questions, dimensionOrder } from "./questions";
 import type { DimensionScores, QuizAnswers, ScoreValue } from "./types";
 
+export const RESULT_THRESHOLD = 0.5;
+
 export const answerOptions = [
   { value: 0, label: "非常偏向左边", description: "强烈认同左侧立场" },
   { value: 0.25, label: "稍微偏向左边", description: "整体更靠近左侧" },
@@ -31,7 +33,7 @@ export function calculateDimensionScores(answers: QuizAnswers): DimensionScores 
 }
 
 export function getResultBinaryString(scores: DimensionScores): string {
-  return dimensionOrder.map((dimension) => (scores[dimension] >= 0.5 ? "1" : "0")).join("");
+  return dimensionOrder.map((dimension) => (scores[dimension] >= RESULT_THRESHOLD ? "1" : "0")).join("");
 }
 
 export function serializeDimensionScores(scores: DimensionScores): string {
