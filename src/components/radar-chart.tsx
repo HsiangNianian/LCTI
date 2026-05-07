@@ -48,8 +48,8 @@ export function RadarChart({ scores }: { scores: number[] }) {
             key={level}
             d={d}
             fill="none"
-            stroke="currentColor"
-            className="text-muted-foreground/20"
+            stroke="#a1a1aa"
+            strokeOpacity={0.3}
             strokeWidth={1}
           />
         );
@@ -65,8 +65,8 @@ export function RadarChart({ scores }: { scores: number[] }) {
             y1={CENTER}
             x2={end.x}
             y2={end.y}
-            stroke="currentColor"
-            className="text-muted-foreground/20"
+            stroke="#a1a1aa"
+            strokeOpacity={0.3}
             strokeWidth={1}
           />
         );
@@ -107,7 +107,7 @@ export function RadarChart({ scores }: { scores: number[] }) {
       {/* Axis labels */}
       {AXES.map((a) => {
         const dim = dimensions[a.dim];
-        const pos = polarToCartesian(CENTER, CENTER, RADIUS + 20, a.angle);
+        const pos = polarToCartesian(CENTER, CENTER, RADIUS + 14, a.angle);
         return (
           <text
             key={a.dim}
@@ -115,8 +115,9 @@ export function RadarChart({ scores }: { scores: number[] }) {
             y={pos.y}
             textAnchor={a.angle === 0 ? "start" : a.angle === 180 ? "end" : "middle"}
             alignmentBaseline={a.angle === -90 ? "hanging" : a.angle === 90 ? "auto" : "central"}
-            fill="currentColor"
-            className="text-[11px] font-bold text-muted-foreground/60"
+            fill="#71717a"
+            fontSize={9}
+            fontWeight={600}
           >
             {dim.abbr}
           </text>
