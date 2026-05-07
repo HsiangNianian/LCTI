@@ -8,7 +8,7 @@ import type { License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Download, Copy } from "lucide-react";
 import { dimensionOrder, dimensions } from "@/lib/questions";
-import { parseDimensionScores } from "@/lib/scoring";
+import { parseDimensionScores, RESULT_THRESHOLD } from "@/lib/scoring";
 
 function DimensionBar({
   value,
@@ -22,10 +22,10 @@ function DimensionBar({
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between text-xs">
-        <span className={value < 0.5 ? "font-bold text-foreground" : "text-muted-foreground"}>
+        <span className={value < RESULT_THRESHOLD ? "font-bold text-foreground" : "text-muted-foreground"}>
           {left}
         </span>
-        <span className={value > 0.5 ? "font-bold text-foreground" : "text-muted-foreground"}>
+        <span className={value > RESULT_THRESHOLD ? "font-bold text-foreground" : "text-muted-foreground"}>
           {right}
         </span>
       </div>
@@ -33,7 +33,7 @@ function DimensionBar({
         <div
           className="absolute h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
           style={{
-            width: `${Math.max(value * 100, value === 0 ? 0 : 6)}%`,
+            width: value === 0 ? "0%" : `${Math.max(value * 100, 6)}%`,
           }}
         />
         <div
@@ -60,7 +60,7 @@ export function ResultContent({ license }: { license: License }) {
   const parsedScores = parseDimensionScores(searchParams.get("scores"));
   const dimensionScores = parsedScores
     ? dimensionOrder.map((dimension) => parsedScores[dimension])
-    : license.binary;
+    : license.binary.map((value) => Number(value));
 
   useEffect(() => {
     const url = window.location.origin + "/test";
