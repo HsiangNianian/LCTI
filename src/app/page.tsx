@@ -40,18 +40,21 @@ export default function HomePage() {
 
           <div className="grid grid-cols-2 gap-2 max-w-sm mx-auto">
             {[
-              ["独行侠", "布道者"],
-              ["审计员", "乐捐者"],
-              ["盾牌手", "冒险家"],
-              ["传教士", "实用派"],
-            ].map(([left, right], i) => (
+              { en: "COL·Collaboration", left: "独行侠", right: "布道者", cn: "协作态度" },
+              { en: "TRU·Trust",         left: "审计员", right: "乐捐者", cn: "信任模式" },
+              { en: "LIA·Liability",     left: "盾牌手", right: "冒险家", cn: "责任边界" },
+              { en: "PRO·Propagation",   left: "传教士", right: "实用派", cn: "传播执念" },
+            ].map(({ en, left, right, cn }, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between gap-1 rounded-lg border px-3 py-2 text-xs"
+                className="flex flex-col items-center gap-1 rounded-lg border px-3 py-2"
               >
-                <span>{left}</span>
-                <span className="text-muted-foreground">↔</span>
-                <span>{right}</span>
+                <span className="text-[10px] font-semibold text-muted-foreground tracking-tight">{en}</span>
+                <div className="flex items-center justify-between gap-1 text-xs w-full">
+                  <span>{left}</span>
+                  <span className="text-muted-foreground">↔</span>
+                  <span>{right}</span>
+                </div>
               </div>
             ))}
           </div>
