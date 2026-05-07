@@ -40,10 +40,10 @@ export default function HomePage() {
 
           <div className="grid grid-cols-2 gap-2 max-w-sm mx-auto">
             {[
-              { en: "COL·Collaboration", left: "独行侠", right: "布道者", cn: "协作态度" },
-              { en: "TRU·Trust",         left: "审计员", right: "乐捐者", cn: "信任模式" },
-              { en: "LIA·Liability",     left: "盾牌手", right: "冒险家", cn: "责任边界" },
-              { en: "PRO·Propagation",   left: "传教士", right: "实用派", cn: "传播执念" },
+              { en: "Collaboration", left: "独行侠", right: "布道者", cn: "协作态度" },
+              { en: "Trust",         left: "审计员", right: "乐捐者", cn: "信任模式" },
+              { en: "Liability",     left: "盾牌手", right: "冒险家", cn: "责任边界" },
+              { en: "Propagation",   left: "传教士", right: "实用派", cn: "传播执念" },
             ].map(({ en, left, right, cn }, i) => (
               <div
                 key={i}
