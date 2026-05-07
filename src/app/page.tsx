@@ -1,71 +1,65 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-const dimensions = [
-  { label: "协作态度", left: "独行侠", right: "布道者" },
-  { label: "信任模式", left: "审计员", right: "乐捐者" },
-  { label: "责任边界", left: "盾牌手", right: "冒险家" },
-  { label: "传播执念", left: "传教士", right: "实用派" },
-];
 
 export default function HomePage() {
   return (
     <main className="flex-1 flex flex-col">
-      <section className="flex-1 flex flex-col items-center justify-center px-4 py-16 md:py-24 text-center">
-        <div className="max-w-2xl mx-auto space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-              你的灵魂开源许可证是什么？
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-lg mx-auto">
-              4 道题，4 个维度，精准定位你的人格与最契合的开源许可证。
+      <section className="flex-1 flex flex-col items-center justify-center px-4 py-16 md:py-28 text-center">
+        <div className="max-w-xl mx-auto space-y-10">
+          <div className="space-y-5">
+            <div className="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
+              🧪 不是 MBTI，而是 LCTI — License Type Indicator
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+              你的灵魂
               <br />
-              没有 AI，没有玄学——只有代码世界的性格真相。
+              开源许可证是什么？
+            </h1>
+            <p className="text-base md:text-lg text-muted-foreground max-w-md mx-auto leading-relaxed">
+              四道灵魂拷问，<span className="font-semibold text-foreground">零 AI、零玄学</span>，
+              <br />
+              纯算法找出你最契合的开源人格。
+              <br />
+              测完还能拿去发朋友圈气死你同事。
             </p>
           </div>
 
-          <Link href="/test">
-            <Button size="lg" className="text-lg px-8 py-6 h-auto">
-              开始测试
-            </Button>
-          </Link>
+          <div className="flex flex-col items-center gap-4">
+            <Link href="/test">
+              <Button
+                size="lg"
+                className="text-base px-10 py-7 h-auto rounded-xl font-bold shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
+              >
+                开始测试 →
+              </Button>
+            </Link>
+            <p className="text-xs text-muted-foreground">
+              全程 30 秒 · 4 道单选题 · 结果可保存分享
+            </p>
+          </div>
 
-          <Card className="max-w-md mx-auto">
-            <CardHeader>
-              <CardTitle className="text-sm">四维人格模型</CardTitle>
-              <CardDescription>
-                每个问题对应一个维度，你的选择将决定最终结果
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                {dimensions.map((d) => (
-                  <div
-                    key={d.label}
-                    className="flex items-center justify-between gap-2 rounded-lg border p-3"
-                  >
-                    <span className="font-medium">{d.left}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {d.label}
-                    </span>
-                    <span className="font-medium">{d.right}</span>
-                  </div>
-                ))}
+          <div className="grid grid-cols-2 gap-2 max-w-sm mx-auto">
+            {[
+              ["独行侠", "布道者"],
+              ["审计员", "乐捐者"],
+              ["盾牌手", "冒险家"],
+              ["传教士", "实用派"],
+            ].map(([left, right], i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between gap-1 rounded-lg border px-3 py-2 text-xs"
+              >
+                <span>{left}</span>
+                <span className="text-muted-foreground">↔</span>
+                <span>{right}</span>
               </div>
-            </CardContent>
-          </Card>
+            ))}
+          </div>
         </div>
       </section>
 
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground space-y-1">
-        <p>灵感来自 MBTI 人格模型 · 纯算法结果 · 仅供娱乐</p>
+      <footer className="border-t px-4 py-6 text-center text-xs text-muted-foreground space-y-1">
+        <p>IANAL — 本测试结果不构成法律建议，仅供娱乐</p>
         <p>
           LCTI &copy;{" "}
           <a
