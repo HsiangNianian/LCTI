@@ -31,7 +31,7 @@ const DOT_SIZE_CLASSES = {
 } as const;
 const MIDDLE_DOT_VALUES = new Set<ScoreValue>([0.25, 0.75]);
 const DOT_OPTION_CARD_CLASSES =
-  "flex min-h-28 min-w-0 cursor-pointer items-center justify-center rounded-2xl border-2 p-2 transition-all hover:bg-muted/50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2";
+  "flex min-h-28 min-w-0 cursor-pointer items-center justify-center rounded-2xl p-2 transition-all hover:bg-muted/50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2";
 
 function QuizInner() {
   const router = useRouter();
@@ -90,16 +90,6 @@ function QuizInner() {
           }}
         >
           <CardHeader>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="rounded-xl bg-indigo-500/10 px-4 py-3">
-                <p className="font-semibold text-indigo-600 dark:text-indigo-400">{dimension.left}</p>
-                <p className="mt-1 text-muted-foreground leading-relaxed">{dimension.leftDesc}</p>
-              </div>
-              <div className="rounded-xl bg-purple-500/10 px-4 py-3 text-right">
-                <p className="font-semibold text-purple-600 dark:text-purple-400">{dimension.right}</p>
-                <p className="mt-1 text-muted-foreground leading-relaxed">{dimension.rightDesc}</p>
-              </div>
-            </div>
             <CardTitle className="text-xl md:text-2xl leading-relaxed">
               {question.text}
             </CardTitle>
@@ -123,10 +113,10 @@ function QuizInner() {
                       ? DOT_SIZE_CLASSES.middle
                       : DOT_SIZE_CLASSES.outer;
                   const activeClasses = isNeutral
-                    ? "has-data-[state=checked]:border-slate-500 has-data-[state=checked]:bg-slate-500/5"
+                    ? "has-data-[state=checked]:bg-slate-500/10"
                     : isLeft
-                      ? "has-data-[state=checked]:border-indigo-500 has-data-[state=checked]:bg-indigo-500/5"
-                      : "has-data-[state=checked]:border-purple-500 has-data-[state=checked]:bg-purple-500/5";
+                      ? "has-data-[state=checked]:bg-indigo-500/10"
+                      : "has-data-[state=checked]:bg-purple-500/10";
                   const dotClasses = isNeutral
                     ? "border-slate-300 text-slate-500 data-[state=checked]:border-slate-500 data-[state=checked]:bg-slate-500"
                     : isLeft
@@ -134,18 +124,29 @@ function QuizInner() {
                       : "border-purple-200 text-purple-500 data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500";
 
                   return (
-                    <Label
-                      key={option.value}
-                      htmlFor={optionId}
-                      className={`${DOT_OPTION_CARD_CLASSES} ${activeClasses}`}
-                    >
-                      <RadioGroupItem
-                        value={option.value.toString()}
-                        id={optionId}
-                        aria-label={`${option.label}: ${option.description}`}
-                        className={`${dotSizeClasses} shrink-0 border-2 ${dotClasses}`}
-                      />
-                    </Label>
+                    <div key={option.value} className="flex flex-col items-center gap-1">
+                      <Label
+                        htmlFor={optionId}
+                        className={`${DOT_OPTION_CARD_CLASSES} ${activeClasses}`}
+                      >
+                        <RadioGroupItem
+                          value={option.value.toString()}
+                          id={optionId}
+                          aria-label={`${option.label}: ${option.description}`}
+                          className={`${dotSizeClasses} shrink-0 border-2 ${dotClasses}`}
+                        />
+                      </Label>
+                      {option.value === 0 && (
+                        <span className="text-[11px] text-center text-muted-foreground leading-tight max-w-16">
+                          {question.leftAnswer}
+                        </span>
+                      )}
+                      {option.value === 1 && (
+                        <span className="text-[11px] text-center text-muted-foreground leading-tight max-w-16">
+                          {question.rightAnswer}
+                        </span>
+                      )}
+                    </div>
                   );
                 })}
               </div>
