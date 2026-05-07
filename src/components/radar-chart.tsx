@@ -2,12 +2,10 @@
 
 import type { DimensionKey } from "@/lib/types";
 import { dimensionOrder, dimensions } from "@/lib/questions";
-import { RESULT_THRESHOLD } from "@/lib/scoring";
 
 const SIZE = 260;
 const CENTER = SIZE / 2;
 const RADIUS = 85;
-const LABEL_OFFSET = 12;
 
 // 4 axes at cardinal directions
 const AXES: { angle: number; dim: DimensionKey }[] = [
@@ -106,58 +104,22 @@ export function RadarChart({ scores }: { scores: number[] }) {
         );
       })}
 
-      {/* Labels */}
+      {/* Axis labels */}
       {AXES.map((a) => {
         const dim = dimensions[a.dim];
-        const isLeft = scoreMap[a.dim] < RESULT_THRESHOLD;
-        const labelEnd = polarToCartesian(CENTER, CENTER, RADIUS + 18, a.angle);
-        const opposite = polarToCartesian(CENTER, CENTER, RADIUS + 18, a.angle + 180);
-
-        // Perpendicular offset to avoid label overlap between opposite axes
-        const perpAngle = a.angle + 90;
-        const perpRad = (perpAngle * Math.PI) / 180;
-        const dx = LABEL_OFFSET * Math.cos(perpRad);
-        const dy = LABEL_OFFSET * Math.sin(perpRad);
-
-        // Dimension name position: along the axis, inside the chart area
-        const dimLabelPos = polarToCartesian(CENTER, CENTER, RADIUS * 0.55, a.angle);
-
+        const pos = polarToCartesian(CENTER, CENTER, RADIUS + 20, a.angle);
         return (
-          <g key={a.dim}>
-            {/* Dimension name */}
-            <text
-              x={dimLabelPos.x}
-              y={dimLabelPos.y}
-              textAnchor="middle"
-              alignmentBaseline="central"
-              fill="currentColor"
-              className="text-[8px] text-muted-foreground/60 tracking-tight"
-            >
-              {dim.label}
-            </text>
-            {/* Left trait label */}
-            <text
-              x={opposite.x + dx}
-              y={opposite.y + dy}
-              textAnchor={a.angle === 180 ? "start" : a.angle === 0 ? "end" : "middle"}
-              alignmentBaseline={a.angle === -90 ? "auto" : a.angle === 90 ? "hanging" : "central"}
-              fill="currentColor"
-              className={`text-[9px] font-medium ${isLeft ? "text-foreground" : "text-muted-foreground"}`}
-            >
-              {dim.left}
-            </text>
-            {/* Right trait label */}
-            <text
-              x={labelEnd.x + dx}
-              y={labelEnd.y + dy}
-              textAnchor={a.angle === 180 ? "end" : a.angle === 0 ? "start" : "middle"}
-              alignmentBaseline={a.angle === -90 ? "hanging" : a.angle === 90 ? "auto" : "central"}
-              fill="currentColor"
-              className={`text-[9px] font-medium ${!isLeft ? "text-foreground" : "text-muted-foreground"}`}
-            >
-              {dim.right}
-            </text>
-          </g>
+          <text
+            key={a.dim}
+            x={pos.x}
+            y={pos.y}
+            textAnchor={a.angle === 0 ? "start" : a.angle === 180 ? "end" : "middle"}
+            alignmentBaseline={a.angle === -90 ? "hanging" : a.angle === 90 ? "auto" : "central"}
+            fill="currentColor"
+            className="text-[11px] font-bold text-muted-foreground/60"
+          >
+            {dim.abbr}
+          </text>
         );
       })}
     </svg>

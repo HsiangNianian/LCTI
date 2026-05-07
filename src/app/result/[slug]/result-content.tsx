@@ -7,7 +7,7 @@ import type { DimensionScores, License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Download, Copy, Check } from "lucide-react";
+import { Download, Copy, Check, BadgePlus } from "lucide-react";
 import { dimensionOrder } from "@/lib/questions";
 import { RadarChart } from "@/components/radar-chart";
 
@@ -23,6 +23,7 @@ export function ResultContent({
   const [copied, setCopied] = useState(false);
   const [activeFormat, setActiveFormat] = useState<"md" | "rst" | "html">("md");
   const [embedCopied, setEmbedCopied] = useState<string | null>(null);
+  const [showEmbedModal, setShowEmbedModal] = useState(false);
   const hasDetailedScores = detailedScores !== null;
   const dimensionScores = hasDetailedScores
     ? dimensionOrder.map((dimension) => detailedScores[dimension])
@@ -46,10 +47,10 @@ export function ResultContent({
   const badgeUrl = `${origin}/badge/${license.slug}.svg`;
 
   const embedCodes: Record<string, string> = useMemo(() => ({
-    md: `![License Persona](${badgeUrl})`,
-    rst: `.. image:: ${badgeUrl}\n   :alt: License Persona`,
-    html: `<img src="${badgeUrl}" alt="License Persona" />`,
-  }), [badgeUrl]);
+    md: `[![License Persona](${badgeUrl})](${origin})`,
+    rst: `.. image:: ${badgeUrl}\n   :target: ${origin}\n   :alt: License Persona`,
+    html: `<a href="${origin}"><img src="${badgeUrl}" alt="License Persona" /></a>`,
+  }), [badgeUrl, origin]);
 
   const handleCopyEmbed = async (format: string) => {
     try {
@@ -179,80 +180,101 @@ export function ResultContent({
 
       {/* Action buttons */}
       <div className="overflow-x-auto flex justify-center">
-      <div className="flex gap-3" style={{ width: 420 }}>
+      <div className="flex gap-2" style={{ width: 420 }}>
         <Button
           variant="default"
-          className="flex-1 rounded-xl h-12 font-bold shadow-md"
+          className="flex-1 rounded-xl h-10 font-bold shadow-md text-xs"
           onClick={handleSaveImage}
         >
-          <Download className="h-4 w-4 mr-2" />
+          <Download className="h-4 w-4 mr-1.5" />
           保存卡片
         </Button>
         <Button
           variant="outline"
-          className="flex-1 rounded-xl h-12"
+          className="flex-1 rounded-xl h-10 text-xs"
           onClick={handleCopyLink}
         >
-          <Copy className="h-4 w-4 mr-2" />
+          <Copy className="h-4 w-4 mr-1.5" />
           {copied ? "已复制！" : "复制链接"}
+        </Button>
+        <Button
+          variant="outline"
+          className="flex-1 rounded-xl h-10 text-xs"
+          onClick={() => setShowEmbedModal(true)}
+        >
+          <BadgePlus className="h-4 w-4 mr-1.5" />
+          嵌入徽章
         </Button>
       </div>
       </div>
 
-      {/* Embed badge */}
-      <div className="overflow-x-auto flex justify-center">
-      <Card className="w-[420px]">
-        <CardContent className="pt-4 space-y-4">
-          <div className="text-center space-y-1">
-            <p className="text-sm font-semibold">嵌入徽章</p>
-            <p className="text-xs text-muted-foreground">
-              在你的个人主页或 README 中展示你的许可证人格
-            </p>
-          </div>
+      {/* Embed modal */}
+      {showEmbedModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowEmbedModal(false)}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/50" />
+          {/* Modal */}
+          <Card
+            className="relative w-full max-w-sm animate-in fade-in zoom-in-95"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CardContent className="pt-5 space-y-4">
+              <div className="text-center space-y-1">
+                <p className="text-sm font-semibold">嵌入徽章</p>
+                <p className="text-xs text-muted-foreground">
+                  在你的个人主页或 README 中展示你的许可证人格
+                </p>
+              </div>
 
-          {/* Badge preview */}
-          <div className="flex justify-center py-1">
-            <img src={badgeUrl} alt={`License Persona: ${license.name}`} className="h-5" />
-          </div>
+              {/* Badge preview */}
+              <div className="flex justify-center py-1">
+                <a href={origin} target="_blank" rel="noopener noreferrer">
+                  <img src={badgeUrl} alt={`License Persona: ${license.name}`} className="h-5" />
+                </a>
+              </div>
 
-          {/* Format tabs */}
-          <div className="flex gap-1 bg-muted rounded-lg p-1">
-            {(["md", "rst", "html"] as const).map((fmt) => (
-              <button
-                key={fmt}
-                onClick={() => setActiveFormat(fmt)}
-                className={cn(
-                  "flex-1 text-xs font-medium py-1.5 rounded-md transition-colors",
-                  activeFormat === fmt
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {formatLabel[fmt]}
-              </button>
-            ))}
-          </div>
+              {/* Format tabs */}
+              <div className="flex gap-1 bg-muted rounded-lg p-1">
+                {(["md", "rst", "html"] as const).map((fmt) => (
+                  <button
+                    key={fmt}
+                    onClick={() => setActiveFormat(fmt)}
+                    className={cn(
+                      "flex-1 text-xs font-medium py-1.5 rounded-md transition-colors",
+                      activeFormat === fmt
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    {formatLabel[fmt]}
+                  </button>
+                ))}
+              </div>
 
-          {/* Code block */}
-          <div className="relative">
-            <pre className="bg-muted rounded-lg p-3 pr-10 text-xs font-mono overflow-x-auto whitespace-pre-wrap break-all">
-              <code>{embedCodes[activeFormat]}</code>
-            </pre>
-            <button
-              onClick={() => handleCopyEmbed(activeFormat)}
-              className="absolute top-2 right-2 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-background transition-colors"
-              aria-label={`复制 ${formatLabel[activeFormat]} 代码`}
-            >
-              {embedCopied === activeFormat ? (
-                <Check className="h-3.5 w-3.5 text-green-500" />
-              ) : (
-                <Copy className="h-3.5 w-3.5" />
-              )}
-            </button>
-          </div>
-        </CardContent>
-      </Card>
-      </div>
+              {/* Code block */}
+              <div className="relative">
+                <pre className="bg-muted rounded-lg p-3 pr-10 text-xs font-mono overflow-x-auto whitespace-pre-wrap break-all">
+                  <code>{embedCodes[activeFormat]}</code>
+                </pre>
+                <button
+                  onClick={() => handleCopyEmbed(activeFormat)}
+                  className="absolute top-2 right-2 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-background transition-colors"
+                  aria-label={`复制 ${formatLabel[activeFormat]} 代码`}
+                >
+                  {embedCopied === activeFormat ? (
+                    <Check className="h-3.5 w-3.5 text-green-500" />
+                  ) : (
+                    <Copy className="h-3.5 w-3.5" />
+                  )}
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </>
   );
 }

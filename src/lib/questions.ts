@@ -11,6 +11,8 @@ export const dimensions: Record<DimensionKey, Dimension> = {
   collaboration: {
     key: "collaboration",
     label: "协作态度",
+    labelEn: "Collaboration",
+    abbr: "COL",
     left: "独行侠",
     right: "布道者",
     leftDesc: "更强调自由传承与开源延续",
@@ -19,6 +21,8 @@ export const dimensions: Record<DimensionKey, Dimension> = {
   trust: {
     key: "trust",
     label: "信任模式",
+    labelEn: "Trust",
+    abbr: "TRU",
     left: "审计员",
     right: "乐捐者",
     leftDesc: "更在意署名、可追溯性与边界说明",
@@ -27,6 +31,8 @@ export const dimensions: Record<DimensionKey, Dimension> = {
   liability: {
     key: "liability",
     label: "责任边界",
+    labelEn: "Liability",
+    abbr: "LIA",
     left: "盾牌手",
     right: "冒险家",
     leftDesc: "更看重免责条款、风险隔离与责任边界",
@@ -35,6 +41,8 @@ export const dimensions: Record<DimensionKey, Dimension> = {
   propagation: {
     key: "propagation",
     label: "传播执念",
+    labelEn: "Propagation",
+    abbr: "PRO",
     left: "传教士",
     right: "实用派",
     leftDesc: "更希望改动持续回流并保持同类开放",

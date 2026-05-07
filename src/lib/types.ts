@@ -3,6 +3,8 @@ export type DimensionKey = "collaboration" | "trust" | "liability" | "propagatio
 export interface Dimension {
   key: DimensionKey;
   label: string;
+  labelEn: string;
+  abbr: string;
   left: string;
   right: string;
   leftDesc: string;
