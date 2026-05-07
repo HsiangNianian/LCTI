@@ -6,50 +6,8 @@ import QRCode from "qrcode";
 import type { DimensionScores, License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Download, Copy } from "lucide-react";
-import { dimensionOrder, dimensions } from "@/lib/questions";
-import { RESULT_THRESHOLD } from "@/lib/scoring";
-
-function DimensionBar({
-  value,
-  left,
-  right,
-}: {
-  value: number;
-  left: string;
-  right: string;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <div className="flex justify-between text-xs">
-        <span className={value < RESULT_THRESHOLD ? "font-bold text-foreground" : "text-muted-foreground"}>
-          {left}
-        </span>
-        <span className={value > RESULT_THRESHOLD ? "font-bold text-foreground" : "text-muted-foreground"}>
-          {right}
-        </span>
-      </div>
-      <div className="relative h-2.5 bg-muted rounded-full">
-        <div
-          className="absolute h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
-          style={{
-            width: value === 0 ? "0%" : `${Math.max(value * 100, 6)}%`,
-          }}
-        />
-        <div
-          className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-white dark:bg-zinc-900 border-2 border-indigo-500 shadow-sm"
-          style={{
-            left:
-              value <= 0
-                ? "0.5rem"
-                : value >= 1
-                  ? "calc(100% - 0.5rem)"
-                  : `calc(${value * 100}% - 0.5rem)`,
-          }}
-        />
-      </div>
-    </div>
-  );
-}
+import { dimensionOrder } from "@/lib/questions";
+import { RadarChart } from "@/components/radar-chart";
 
 export function ResultContent({
   license,
@@ -115,12 +73,12 @@ export function ResultContent({
           />
 
           {/* Header */}
-          <div className="text-center pt-6 pb-2 px-4">
+          <div className="relative pt-6 pb-2 px-4 text-center">
             <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md"
+              className="absolute top-6 left-4 w-8 h-8 rounded-lg flex items-center justify-center shadow-sm"
               style={{ backgroundColor: license.color }}
             >
-              <span className="text-2xl font-bold text-white">
+              <span className="text-sm font-bold text-white">
                 {license.name.charAt(0)}
               </span>
             </div>
@@ -150,31 +108,21 @@ export function ResultContent({
               </p>
             </div>
 
+            {/* Radar chart */}
+            <div className="flex justify-center py-2">
+              <RadarChart scores={dimensionScores} />
+            </div>
+            {!hasDetailedScores && (
+              <p className="text-[11px] text-center text-muted-foreground leading-relaxed">
+                当前分享链接未附带细分分值，雷达图按结果类型显示为端点倾向。
+              </p>
+            )}
+
             {/* Description */}
             <div className="bg-muted/50 rounded-xl p-5">
               <p className="text-xs text-muted-foreground leading-relaxed">
                 {license.description}
               </p>
-            </div>
-
-            {/* Dimensions */}
-            <div className="space-y-4">
-              <p className="text-xs font-semibold text-center text-muted-foreground uppercase tracking-wider">
-                人格维度
-              </p>
-              {dimensionScores.map((value, i) => (
-                <DimensionBar
-                  key={i}
-                  value={value}
-                  left={dimensions[dimensionOrder[i]].left}
-                  right={dimensions[dimensionOrder[i]].right}
-                />
-              ))}
-              {!hasDetailedScores && (
-                <p className="text-[11px] text-center text-muted-foreground leading-relaxed">
-                  当前分享链接未附带细分分值，维度条按结果类型显示为端点倾向。
-                </p>
-              )}
             </div>
           </div>
 
