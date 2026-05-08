@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useQuiz } from "@/lib/quiz-context";
 import {
   calculateDimensionScores,
@@ -41,7 +42,6 @@ const answerOptions = [
 
 interface QuizMessages {
   reset: string;
-  progress: string;
   hint: string;
   prev: string;
   next: string;
@@ -80,9 +80,11 @@ export function QuizInner({
     }
   };
 
-  const progressText = messages.progress
-    .replace("{current}", String(currentQuestion + 1))
-    .replace("{total}", String(questions.length));
+  const qt = useTranslations("quiz");
+  const progressText = qt("progress", {
+    current: currentQuestion + 1,
+    total: questions.length,
+  });
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">

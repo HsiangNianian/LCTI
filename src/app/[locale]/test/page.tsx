@@ -27,7 +27,6 @@ export default async function TestPage({
         locale={locale}
         messages={{
           reset: t("reset"),
-          progress: t("progress"),
           hint: t("hint"),
           prev: t("prev"),
           next: t("next"),

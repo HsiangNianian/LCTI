@@ -44,7 +44,7 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
-      <body className="bg-background text-foreground min-h-dvh flex flex-col">
+      <body className="bg-background text-foreground min-h-dvh flex flex-col" suppressHydrationWarning>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider>
             <header className="flex justify-end gap-2 px-4 pt-4">
