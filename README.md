@@ -31,24 +31,24 @@ LCTI 是一套**开源许可证人格测试**，灵感来自 MBTI。通过 32 �
 
 ### 16 种人格映射
 
-| 二进制   | License      | 人格标题               |
-| -------- | ------------ | ---------------------- |
-| `0000` | GPLv3        | 代码共产主义者         |
-| `0001` | GPLv2        | 原则性极强的老炮儿     |
-| `0010` | LGPLv3       | 温柔而坚定的自由主义者 |
-| `0011` | AGPLv3       | 网络空间的守门人       |
-| `0100` | EUPL 1.2     | 布鲁塞尔来的外交官     |
-| `0101` | WTFPL        | 开源界的 Andrew W.K.   |
-| `0110` | CC0          | 知识无国界战士         |
-| `0111` | Unlicense    | 无政府主义实干家       |
-| `1000` | OSL 3.0      | 开源世界的公司法务     |
-| `1001` | MPL 2.0      | 鱼和熊掌我都要         |
-| `1010` | zlib         | 极简主义教父           |
-| `1011` | ISC          | npm 背后的无名英雄     |
-| `1100` | BSD 3-Clause | 品牌保护协会会长       |
-| `1101` | BSD 2-Clause | 沉默的大多数           |
-| `1110` | Apache 2.0   | 成熟稳重的技术负责人   |
-| `1111` | MIT          | 开源第一公民           |
+| 二进制   | License      | Badge                                                                                                            | 人格标题               |
+| -------- | ------------ | ---------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `0000` | GPLv3        | ![GPLv3](https://lcti.hydroroll.team/badge/gpl-3.0.svg)                                                          | 代码共产主义者         |
+| `0001` | GPLv2        | ![GPLv2](https://lcti.hydroroll.team/badge/gpl-2.0.svg)                                                          | 原则性极强的老炮儿     |
+| `0010` | LGPLv3       | ![LGPLv3](https://lcti.hydroroll.team/badge/lgpl-3.0.svg)                                                        | 温柔而坚定的自由主义者 |
+| `0011` | AGPLv3       | ![AGPLv3](https://lcti.hydroroll.team/badge/agpl-3.0.svg)                                                        | 网络空间的守门人       |
+| `0100` | EUPL 1.2     | ![EUPL 1.2](https://lcti.hydroroll.team/badge/eupl-1.2.svg)                                                      | 布鲁塞尔来的外交官     |
+| `0101` | WTFPL        | ![WTFPL](https://lcti.hydroroll.team/badge/wtfpl.svg)                                                            | 开源界的 Andrew W.K.   |
+| `0110` | CC0          | ![CC0](https://lcti.hydroroll.team/badge/cc0.svg)                                                                | 知识无国界战士         |
+| `0111` | Unlicense    | ![Unlicense](https://lcti.hydroroll.team/badge/unlicense.svg)                                                    | 无政府主义实干家       |
+| `1000` | OSL 3.0      | ![OSL 3.0](https://lcti.hydroroll.team/badge/osl-3.0.svg)                                                        | 开源世界的公司法务     |
+| `1001` | MPL 2.0      | ![MPL 2.0](https://lcti.hydroroll.team/badge/mpl-2.0.svg)                                                        | 鱼和熊掌我都要         |
+| `1010` | zlib         | ![zlib](https://lcti.hydroroll.team/badge/zlib.svg)                                                              | 极简主义教父           |
+| `1011` | ISC          | ![ISC](https://lcti.hydroroll.team/badge/isc.svg)                                                                | npm 背后的无名英雄     |
+| `1100` | BSD 3-Clause | ![BSD 3-Clause](https://lcti.hydroroll.team/badge/bsd-3-clause.svg)                                              | 品牌保护协会会长       |
+| `1101` | BSD 2-Clause | ![BSD 2-Clause](https://lcti.hydroroll.team/badge/bsd-2-clause.svg)                                              | 沉默的大多数           |
+| `1110` | Apache 2.0   | ![Apache 2.0](https://lcti.hydroroll.team/badge/apache-2.0.svg)                                                  | 成熟稳重的技术负责人   |
+| `1111` | MIT          | ![MIT](https://lcti.hydroroll.team/badge/mit.svg)                                                                | 开源第一公民           |
 
 ---
 
