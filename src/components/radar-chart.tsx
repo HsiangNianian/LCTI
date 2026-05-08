@@ -1,7 +1,7 @@
 "use client";
 
-import type { DimensionKey } from "@/lib/types";
-import { dimensionOrder, dimensions } from "@/lib/questions";
+import type { Dimension, DimensionKey } from "@/lib/types";
+import { dimensionOrder } from "@/lib/data/base";
 
 const SIZE = 260;
 const CENTER = SIZE / 2;
@@ -23,7 +23,13 @@ function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
   };
 }
 
-export function RadarChart({ scores }: { scores: number[] }) {
+export function RadarChart({
+  scores,
+  dimensions,
+}: {
+  scores: number[];
+  dimensions: Record<string, Dimension>;
+}) {
   const scoreMap = Object.fromEntries(
     dimensionOrder.map((dim, i) => [dim, scores[i]]),
   );

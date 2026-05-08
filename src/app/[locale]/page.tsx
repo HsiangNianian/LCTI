@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getDimensions } from "@/lib/data";
@@ -10,6 +10,8 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "hero" });
+  const footerT = await getTranslations({ locale, namespace: "footer" });
   const dimensions = await getDimensions(locale);
 
   const traitEntries = Object.values(dimensions).map((d) => ({
@@ -24,19 +26,19 @@ export default async function HomePage({
         <div className="max-w-xl mx-auto space-y-10">
           <div className="space-y-5">
             <div className="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
-              LCTI — License Type Indicator
+              {t("badge")}
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-              你的灵魂
-              <br />
-              开源许可证是什么？
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight whitespace-pre-line">
+              {t("heading")}
             </h1>
             <p className="text-base md:text-lg text-muted-foreground max-w-md mx-auto leading-relaxed">
-              32 道渐进式灵魂拷问，<span className="font-semibold text-foreground">零 AI、零玄学</span>，
+              {t("body_prefix")}
+              <span className="font-semibold text-foreground">{t("highlight")}</span>
+              {t("body_suffix")}
               <br />
-              用 0 到 1 的倾向分值，纯算法归纳你的 16 型开源人格。
+              {t("body2")}
               <br />
-              测完还能拿去发朋友圈气死你同事(bushi)
+              {t("body3")}
             </p>
           </div>
 
@@ -46,11 +48,11 @@ export default async function HomePage({
                 size="lg"
                 className="text-base px-10 py-7 h-auto rounded-xl font-bold shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
               >
-                开始测试 →
+                {t("cta")}
               </Button>
             </Link>
             <p className="text-xs text-muted-foreground">
-              全程约 2 分钟 · 32 道梯度题
+              {t("subtitle")}
             </p>
           </div>
 
@@ -73,7 +75,7 @@ export default async function HomePage({
       </section>
 
       <footer className="border-t px-4 py-6 text-center text-xs text-muted-foreground space-y-1">
-        <p>IANAL — 本测试结果不构成法律建议，仅供娱乐</p>
+        <p>{footerT("disclaimer")}</p>
         <p>
           LCTI &copy;{" "}
           <a

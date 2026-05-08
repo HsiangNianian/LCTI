@@ -12,8 +12,9 @@
   "hero": {
     "badge": "LCTI — License Type Indicator",
     "heading": "你的灵魂\n开源许可证是什么？",
-    "body1": "32 道渐进式灵魂拷问，",
+    "body_prefix": "32 道渐进式灵魂拷问，",
     "highlight": "零 AI、零玄学",
+    "body_suffix": "，",
     "body2": "用 0 到 1 的倾向分值，纯算法归纳你的 16 型开源人格。",
     "body3": "测完还能拿去发朋友圈气死你同事(bushi)",
     "cta": "开始测试 →",

@@ -1,21 +1,9 @@
-import { questions, dimensionOrder } from "./questions";
-import type { DimensionScores, QuizAnswers, ScoreValue } from "./types";
+import { dimensionOrder } from "./data/base";
+import type { DimensionScores, QuizAnswers, ScoreValue, Question } from "./types";
 
 export const RESULT_THRESHOLD = 0.5;
 
-export const answerOptions = [
-  { value: 0, label: "非常偏向左边", description: "强烈认同左侧立场" },
-  { value: 0.25, label: "稍微偏向左边", description: "整体更靠近左侧" },
-  { value: 0.5, label: "两边都能接受", description: "倾向接近中间值" },
-  { value: 0.75, label: "稍微偏向右边", description: "整体更靠近右侧" },
-  { value: 1, label: "非常偏向右边", description: "强烈认同右侧立场" },
-] as const satisfies ReadonlyArray<{
-  value: ScoreValue;
-  label: string;
-  description: string;
-}>;
-
-export function calculateDimensionScores(answers: QuizAnswers): DimensionScores {
+export function calculateDimensionScores(answers: QuizAnswers, questions: Question[]): DimensionScores {
   return dimensionOrder.reduce<DimensionScores>(
     (scores, dimension) => {
       const dimensionQuestions = questions.filter((question) => question.dimension === dimension);
