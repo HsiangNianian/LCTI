@@ -1,13 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { QuizProvider, useQuiz } from "@/lib/quiz-context";
-import { dimensions, questions } from "@/lib/questions";
+import { useQuiz } from "@/lib/quiz-context";
 import {
-  answerOptions,
   calculateDimensionScores,
   getResultBinaryString,
-  RESULT_THRESHOLD,
   serializeDimensionScores,
 } from "@/lib/scoring";
 import { Button } from "@/components/ui/button";
@@ -22,7 +19,7 @@ import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ArrowLeft, RotateCcw } from "lucide-react";
-import type { ScoreValue } from "@/lib/types";
+import type { Dimension, Question, ScoreValue } from "@/lib/types";
 
 const DOT_SIZE_CLASSES = {
   outer: "h-14 w-14",
@@ -32,8 +29,38 @@ const DOT_SIZE_CLASSES = {
 const MIDDLE_DOT_VALUES = new Set<ScoreValue>([0.25, 0.75]);
 const DOT_OPTION_CARD_CLASSES =
   "flex min-h-28 min-w-0 cursor-pointer items-center justify-center rounded-2xl p-2 transition-all hover:bg-muted/50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2";
+const RESULT_THRESHOLD = 0.5;
 
-function QuizInner() {
+const answerOptions = [
+  { value: 0 as ScoreValue, labelIdx: 0, descIdx: 0 },
+  { value: 0.25 as ScoreValue, labelIdx: 1, descIdx: 1 },
+  { value: 0.5 as ScoreValue, labelIdx: 2, descIdx: 2 },
+  { value: 0.75 as ScoreValue, labelIdx: 3, descIdx: 3 },
+  { value: 1 as ScoreValue, labelIdx: 4, descIdx: 4 },
+];
+
+interface QuizMessages {
+  reset: string;
+  progress: string;
+  hint: string;
+  prev: string;
+  next: string;
+  submit: string;
+  scoringLabels: [string, string, string, string, string];
+  scoringDescs: [string, string, string, string, string];
+}
+
+export function QuizInner({
+  questions,
+  dimensions,
+  locale,
+  messages,
+}: {
+  questions: Question[];
+  dimensions: Record<string, Dimension>;
+  locale: string;
+  messages: QuizMessages;
+}) {
   const router = useRouter();
   const { answers, currentQuestion, setAnswer, nextQuestion, prevQuestion, reset } = useQuiz();
   const question = questions[currentQuestion];
@@ -42,17 +69,20 @@ function QuizInner() {
   const isLast = currentQuestion === questions.length - 1;
 
   const currentAnswer = answers[question.id];
-  const selectedOption = answerOptions.find((option) => option.value === currentAnswer);
 
   const handleNext = () => {
     if (isLast) {
-      const scores = calculateDimensionScores(answers);
+      const scores = calculateDimensionScores(answers, questions);
       const bin = getResultBinaryString(scores);
-      router.push(`/result/${bin}?scores=${serializeDimensionScores(scores)}`);
+      router.push(`/${locale}/result/${bin}?scores=${serializeDimensionScores(scores)}`);
     } else {
       nextQuestion();
     }
   };
+
+  const progressText = messages.progress
+    .replace("{current}", String(currentQuestion + 1))
+    .replace("{total}", String(questions.length));
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
@@ -65,12 +95,12 @@ function QuizInner() {
               className="inline-flex items-center gap-1 hover:text-foreground transition-colors text-xs"
             >
               <RotateCcw className="h-3 w-3" />
-              重来
+              {messages.reset}
             </button>
           </div>
           <Progress value={progress} className="h-2.5" />
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>第 {currentQuestion + 1} / {questions.length} 题</span>
+            <span>{progressText}</span>
             <span>{dimension.left} / {dimension.right}</span>
           </div>
         </div>
@@ -122,6 +152,8 @@ function QuizInner() {
                     : isLeft
                       ? "border-indigo-200 text-indigo-500 data-[state=checked]:border-indigo-500 data-[state=checked]:bg-indigo-500"
                       : "border-purple-200 text-purple-500 data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500";
+                  const scoringLabel = messages.scoringLabels[option.labelIdx];
+                  const scoringDesc = messages.scoringDescs[option.descIdx];
 
                   return (
                     <div key={option.value} className="flex flex-col items-center gap-1">
@@ -132,7 +164,7 @@ function QuizInner() {
                         <RadioGroupItem
                           value={option.value.toString()}
                           id={optionId}
-                          aria-label={`${option.label}: ${option.description}`}
+                          aria-label={`${scoringLabel}: ${scoringDesc}`}
                           className={`${dotSizeClasses} shrink-0 border-2 ${dotClasses}`}
                         />
                       </Label>
@@ -151,9 +183,9 @@ function QuizInner() {
                 })}
               </div>
               <p className="min-h-5 text-center text-sm text-muted-foreground">
-                {selectedOption
-                  ? `${selectedOption.label}: ${selectedOption.description}`
-                  : "点越大表示倾向越强，中间最小表示两边都能接受。"}
+                {currentAnswer !== undefined
+                  ? `${messages.scoringLabels[answerOptions.find((o) => o.value === currentAnswer)!.labelIdx]}: ${messages.scoringDescs[answerOptions.find((o) => o.value === currentAnswer)!.descIdx]}`
+                  : messages.hint}
               </p>
             </RadioGroup>
           </CardContent>
@@ -166,7 +198,7 @@ function QuizInner() {
               className="rounded-xl px-6"
             >
               <ArrowLeft className="h-4 w-4 mr-1" />
-              上一题
+              {messages.prev}
             </Button>
             <Button
               size="lg"
@@ -174,19 +206,11 @@ function QuizInner() {
               disabled={currentAnswer === undefined}
               className="rounded-xl px-8 font-bold"
             >
-              {isLast ? "🔮 查看 16 型结果" : "下一题 →"}
+              {isLast ? messages.submit : messages.next}
             </Button>
           </CardFooter>
         </Card>
       </div>
     </div>
-  );
-}
-
-export default function TestPage() {
-  return (
-    <QuizProvider>
-      <QuizInner />
-    </QuizProvider>
   );
 }

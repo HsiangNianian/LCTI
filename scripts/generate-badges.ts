@@ -3,7 +3,7 @@ import { writeFileSync, mkdirSync } from "fs";
 import { join } from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { licenses } from "../src/lib/licenses";
+import { licenses } from "../src/lib/data/zh/texts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

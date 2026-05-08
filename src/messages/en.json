@@ -12,9 +12,10 @@
   "hero": {
     "badge": "LCTI — License Type Indicator",
     "heading": "What's Your\nSoul Open Source License?",
-    "body1": "32 progressive soul-searching questions,",
+    "body_prefix": "32 progressive soul-searching questions, ",
     "highlight": "zero AI, zero mysticism",
-    "body2": "using 0-to-1 gradient scoring to algorithmically map your 16-type open source persona.",
+    "body_suffix": ".",
+    "body2": "Using 0-to-1 gradient scoring to algorithmically map your 16-type open source persona.",
     "body3": "Share the result and annoy your colleagues (just kidding)",
     "cta": "Start Test →",
     "subtitle": "About 2 min · 32 gradient questions"

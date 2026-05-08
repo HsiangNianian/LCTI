@@ -1,12 +1,12 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
-import { questions } from "./questions";
-import type { QuizAnswers, ScoreValue } from "./types";
+import type { QuizAnswers, ScoreValue, Question } from "./types";
 
 interface QuizContextValue {
   answers: QuizAnswers;
   currentQuestion: number;
+  questions: Question[];
   setAnswer: (questionId: number, value: ScoreValue) => void;
   nextQuestion: () => void;
   prevQuestion: () => void;
@@ -14,13 +14,13 @@ interface QuizContextValue {
   reset: () => void;
 }
 
-const defaultAnswers: QuizAnswers = Object.fromEntries(
-  questions.map((question) => [question.id, undefined]),
-) as QuizAnswers;
-
 const QuizContext = createContext<QuizContextValue | null>(null);
 
-export function QuizProvider({ children }: { children: ReactNode }) {
+export function QuizProvider({ children, questions }: { children: ReactNode; questions: Question[] }) {
+  const defaultAnswers: QuizAnswers = Object.fromEntries(
+    questions.map((q) => [q.id, undefined]),
+  ) as QuizAnswers;
+
   const [answers, setAnswers] = useState<QuizAnswers>(defaultAnswers);
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
@@ -30,7 +30,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
 
   const nextQuestion = useCallback(() => {
     setCurrentQuestion((prev) => Math.min(prev + 1, questions.length - 1));
-  }, []);
+  }, [questions.length]);
 
   const prevQuestion = useCallback(() => {
     setCurrentQuestion((prev) => Math.max(prev - 1, 0));
@@ -45,7 +45,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
 
   return (
     <QuizContext.Provider
-      value={{ answers, currentQuestion, setAnswer, nextQuestion, prevQuestion, isComplete, reset }}
+      value={{ answers, currentQuestion, questions, setAnswer, nextQuestion, prevQuestion, isComplete, reset }}
     >
       {children}
     </QuizContext.Provider>
