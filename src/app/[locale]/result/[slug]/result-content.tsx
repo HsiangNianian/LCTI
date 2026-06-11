@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import type { Dimension, License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn, BASE_PATH } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Download, Copy, Check, BadgePlus } from "lucide-react";
 import { dimensionOrder } from "@/lib/data/base";
 import { RadarChart } from "@/components/radar-chart";
@@ -42,7 +42,7 @@ export function ResultContent({
     : license.binary.map((value) => (value === 1 ? 1 : 0));
 
   useEffect(() => {
-    const url = `${window.location.origin}${BASE_PATH}/${locale}/test`;
+    const url = `${window.location.origin}/${locale}/test`;
     QRCode.toDataURL(url, {
       width: 240,
       margin: 1,
@@ -55,12 +55,12 @@ export function ResultContent({
     return window.location.origin;
   }, []);
 
-  const badgeUrl = `${origin}${BASE_PATH}/badge/${license.slug}.svg`;
+  const badgeUrl = `${origin}/badge/${license.slug}.svg`;
 
   const embedCodes: Record<string, string> = useMemo(() => ({
-    md: `[![License Persona](${badgeUrl})](${origin}${BASE_PATH})`,
-    rst: `.. image:: ${badgeUrl}\n   :target: ${origin}${BASE_PATH}\n   :alt: License Persona`,
-    html: `<a href="${origin}${BASE_PATH}"><img src="${badgeUrl}" alt="License Persona" /></a>`,
+    md: `[![License Persona](${badgeUrl})](${origin})`,
+    rst: `.. image:: ${badgeUrl}\n   :target: ${origin}\n   :alt: License Persona`,
+    html: `<a href="${origin}"><img src="${badgeUrl}" alt="License Persona" /></a>`,
   }), [badgeUrl, origin]);
 
   const handleCopyEmbed = async (format: string) => {
@@ -242,7 +242,7 @@ export function ResultContent({
 
               {/* Badge preview */}
               <div className="flex justify-center py-1">
-                <a href={`${origin}${BASE_PATH}`} target="_blank" rel="noopener noreferrer">
+                <a href={origin} target="_blank" rel="noopener noreferrer">
                   <img src={badgeUrl} alt={`License Persona: ${license.name}`} className="h-5" />
                 </a>
               </div>

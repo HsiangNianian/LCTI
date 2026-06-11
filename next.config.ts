@@ -5,7 +5,6 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
   output: "export",
-  basePath: "/LCTI",
 } as const satisfies NextConfig;
 
 export default withNextIntl(nextConfig);
