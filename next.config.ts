@@ -1,8 +1,11 @@
 import createNextIntlPlugin from "next-intl/plugin";
+import type { NextConfig } from "next";
 
 const withNextIntl = createNextIntlPlugin();
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  output: "export",
+  basePath: "/LCTI",
+} as const satisfies NextConfig;
 
 export default withNextIntl(nextConfig);

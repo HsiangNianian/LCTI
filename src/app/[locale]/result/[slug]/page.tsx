@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getLicenseBySlug, getLicenses, getDimensions } from "@/lib/data";
-import { parseDimensionScores } from "@/lib/scoring";
 import { ResultContent } from "./result-content";
 
 const allBinaries = Array.from({ length: 16 }, (_, i) =>
@@ -39,14 +38,10 @@ export async function generateMetadata({
 
 export default async function ResultPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ slug: string; locale: string }>;
-  searchParams: Promise<{ scores?: string }>;
 }) {
   const { slug, locale } = await params;
-  const { scores } = await searchParams;
-  const normalizedScores = typeof scores === "string" ? scores : null;
 
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "result" });
@@ -66,7 +61,6 @@ export default async function ResultPage({
       <div className="w-full max-w-lg mx-auto space-y-6">
         <ResultContent
           license={license}
-          dimensionScores={parseDimensionScores(normalizedScores)}
           locale={locale}
           dimensions={dimensions}
         />

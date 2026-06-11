@@ -4,22 +4,21 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import { toPng } from "html-to-image";
 import QRCode from "qrcode";
 import { useTranslations } from "next-intl";
-import type { Dimension, DimensionScores, License } from "@/lib/types";
+import type { Dimension, License } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn, BASE_PATH } from "@/lib/utils";
 import { Download, Copy, Check, BadgePlus } from "lucide-react";
 import { dimensionOrder } from "@/lib/data/base";
 import { RadarChart } from "@/components/radar-chart";
+import { parseDimensionScores } from "@/lib/scoring";
 
 export function ResultContent({
   license,
-  dimensionScores: detailedScores,
   locale,
   dimensions,
 }: {
   license: License;
-  dimensionScores: DimensionScores | null;
   locale: string;
   dimensions: Record<string, Dimension>;
 }) {
@@ -30,13 +29,20 @@ export function ResultContent({
   const [embedCopied, setEmbedCopied] = useState<string | null>(null);
   const [showEmbedModal, setShowEmbedModal] = useState(false);
   const t = useTranslations("result");
+
+  const detailedScores = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const params = new URLSearchParams(window.location.search);
+    const scores = params.get("scores");
+    return parseDimensionScores(scores);
+  }, []);
   const hasDetailedScores = detailedScores !== null;
   const dimensionScores = hasDetailedScores
     ? dimensionOrder.map((dimension) => detailedScores[dimension])
     : license.binary.map((value) => (value === 1 ? 1 : 0));
 
   useEffect(() => {
-    const url = window.location.origin + `/test`;
+    const url = `${window.location.origin}${BASE_PATH}/${locale}/test`;
     QRCode.toDataURL(url, {
       width: 240,
       margin: 1,
@@ -49,12 +55,12 @@ export function ResultContent({
     return window.location.origin;
   }, []);
 
-  const badgeUrl = `${origin}/badge/${license.slug}.svg`;
+  const badgeUrl = `${origin}${BASE_PATH}/badge/${license.slug}.svg`;
 
   const embedCodes: Record<string, string> = useMemo(() => ({
-    md: `[![License Persona](${badgeUrl})](${origin})`,
-    rst: `.. image:: ${badgeUrl}\n   :target: ${origin}\n   :alt: License Persona`,
-    html: `<a href="${origin}"><img src="${badgeUrl}" alt="License Persona" /></a>`,
+    md: `[![License Persona](${badgeUrl})](${origin}${BASE_PATH})`,
+    rst: `.. image:: ${badgeUrl}\n   :target: ${origin}${BASE_PATH}\n   :alt: License Persona`,
+    html: `<a href="${origin}${BASE_PATH}"><img src="${badgeUrl}" alt="License Persona" /></a>`,
   }), [badgeUrl, origin]);
 
   const handleCopyEmbed = async (format: string) => {
@@ -236,7 +242,7 @@ export function ResultContent({
 
               {/* Badge preview */}
               <div className="flex justify-center py-1">
-                <a href={origin} target="_blank" rel="noopener noreferrer">
+                <a href={`${origin}${BASE_PATH}`} target="_blank" rel="noopener noreferrer">
                   <img src={badgeUrl} alt={`License Persona: ${license.name}`} className="h-5" />
                 </a>
               </div>
