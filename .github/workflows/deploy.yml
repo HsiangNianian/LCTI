@@ -30,6 +30,8 @@ jobs:
       - run: pnpm install
       - run: pnpm build
 
+      - run: cp CNAME out/
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
